@@ -1,0 +1,34 @@
+{
+    "title": "The Lord of the Rings: The Fellowship of the Ring",
+    "title_fr": "Le seigneur des anneaux : La Communauté de l'anneau",
+    "year": 2001,
+    "genre": ["Fantasy", "Action", "Adventure"],
+    "description_fr": "Un Hobbit du Comté et ses huit compagnons se mettent en route pour détruire le puissant anneau unique et sauver la Terre du Milieu du terrible Sauron.",
+    "description": "A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.",
+    "director": ["Peter Jackson"], 
+    "actors": [
+        {
+            "actor_id": 1,
+            "name": "Elijah Wood"
+        },
+        {
+            "actor_id": 2,
+            "name": "Fran Walsh"
+        },
+        {
+            "actor_id": 3,
+            "name": "Orlando Bloom"
+        }
+    ],
+    "studios": [
+        {
+            "studio_id": 1,
+            "name": "New Line Cinema"
+        },
+        {
+            "studio_id": 2,
+            "name": "WingNut Films"
+        }
+    ]
+    
+}
