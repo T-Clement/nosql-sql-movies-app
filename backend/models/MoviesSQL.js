@@ -1,4 +1,4 @@
-const pool = require('../config/sqlite');
+const db = require('../config/sqlite');
 
 
 
@@ -15,28 +15,47 @@ class MoviesSQL {
 
 
     static async getMovie (id) {
-        const query = `SELECT * FROM movies WHERE movie_id = ?`;
-        const values = [id];
-        
 
-        try {
 
-            const [rows, fields] = await pool.execute(query, values);
 
-            if(rows.length === 0) {
-                return null;
-            } else {
-                return rows[0];
-            }
+        const query = 'SELECT * FROM movies WHERE movie_id = $id';
+        const values = { $id: id };
 
-        } catch(error) {
-            console.error("Error finding movie by id : " + error.message);
-            throw error;
-        }
+        return new Promise((resolve, reject) => {
+            db.get(query, values, (err, row) => {
+                if (err) {
+                    console.error("Error finding movie by id: " + err.message);
+                    reject(err); // reject promise if error
+                    // console.log(row);
+                    resolve(null); // resolve promise with row or null if no results
+                } else {
+                    resolve(row);
+                }
+            });
+        });
 
     } 
 
 
+    static async getMovies() {
+        const query = 'SELECT * FROM movies;';
+        const values = {};
+
+        return new Promise((resolve, reject) => {
+            db.all(query, values, (err, rows) => {
+                if(err) {
+                    console.error("Error finding movies : " + err.message);
+                    reject(err);
+                    // console.log(rows);
+                    resolve(null);
+                } else {
+                    // console.log(rows);
+                    resolve(rows);
+                }
+            });
+        });
+
+    }
 
 }
 

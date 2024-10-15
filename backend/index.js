@@ -259,22 +259,40 @@ const app = express();
 const port = 3000;
 
 
-// app.cors()
-const cors = require('cors')
+const MoviesSQL = require('./models/MoviesSQL');
 
-const corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200 
-}
+// const cors = require('cors');
+// const corsOptions = {
+//   origin: '*',
+//   optionsSuccessStatus: 200 
+// }
 
 
-app.get('/', cors(corsOptions), (req, res) => {
-  res.send('Hello World!');
+// app.get('/', cors(corsOptions), (req, res) => {
+//   res.send('Hello World!');
+// });
+
+
+app.get('/api/sql/movies/:id', async (req, res, next) => {
+
+  const movie = await MoviesSQL.getMovie(parseInt(req.params.id));
+  if(!movie) {
+    return res.status(404).json({});
+  }
+
+  
+  
+  return res.status(200).json(movie);
 });
 
 
-// app.get()
 
+app.get('/api/sql/movies', async (req, res, next) => {
+  const movies = await MoviesSQL.getMovies();
+
+  return res.status(200).json(movies);
+
+})
 
 
 
