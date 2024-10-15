@@ -19,16 +19,31 @@ class MoviesMongo {
     }
 
 
+
+
+
+
+
     async getMovie(movie_id) {
         const movie = await this.collection.findOne({_id: movie_id});
         return movie;
     }
 
 
+    async getMovies() {
+        const movies = await this.collection.find().toArray();
+        return movies;
+    }
 
 
+    // async getActorsFromMovie() {
+    //     const actors = await this.collection.find().to
+    // }
 
     
+
+
+
 
   }
   module.exports = MoviesMongo;

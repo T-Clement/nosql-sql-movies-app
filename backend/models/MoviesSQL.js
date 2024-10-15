@@ -58,7 +58,7 @@ class MoviesSQL {
     }
 
 
-
+    // in ACTOR MODEL
     static async getMovieActors(movie_id) {
         const query = 'SELECT a.actor_id, a.firstname, a.lastname FROM actors a INNER JOIN actors_movies USING(actor_id) WHERE movie_id = $movie_id';
         const values = {$movie_id: movie_id};

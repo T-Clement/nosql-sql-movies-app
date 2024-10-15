@@ -250,6 +250,9 @@ const mongo = require('./config/mongodb');
 async function start() {
   // other app startup stuff...
   await mongo.init();
+
+  
+
   // other app startup stuff...
 }
 start();
@@ -330,8 +333,7 @@ app.get('/api/sql/movies', async (req, res, next) => {
 
 
 app.get('/api/mongodb/movies', async (req, res, next) => {
-  const movies = mongo.Movies.collection.find();
-  console.log(movies);
+  const movies = mongo.Movies.getMovies();
   return res.status(200).json(movies);
 })
 
