@@ -55,7 +55,6 @@ class ActorsMongo {
             { firstname: firstname, lastname: lastname },
             { projection: { _id: 1, firstname: 1, lastname: 1 } } 
         );
-        console.log(actorData);
         if (!actorData) {
             return null;
         }
