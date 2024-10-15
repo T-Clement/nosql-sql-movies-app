@@ -275,12 +275,44 @@ const MoviesSQL = require('./models/MoviesSQL');
 
 app.get('/api/sql/movies/:id', async (req, res, next) => {
 
-  const movie = await MoviesSQL.getMovie(parseInt(req.params.id));
+  const movie_id = parseInt(req.params.id);
+
+
+  const movie = await MoviesSQL.getMovie(movie_id);
   if(!movie) {
     return res.status(404).json({});
   }
 
-  
+  // get complementary data
+  const actors = await MoviesSQL.getMovieActors(movie_id);
+
+  // add actors data to movie object 
+  if(!actors) {
+    movie.actors = [];
+  } else {
+    movie.actors = actors;
+  }
+
+
+
+  const genres = await MoviesSQL.getMovieGenres(movie_id);
+
+  if(!genres) {
+    movie.genres = [];
+  } else {
+    movie.genres = genres;
+  }
+
+
+  const studios = await MoviesSQL.getMovieStudios(movie_id);
+
+  if(!studios) {
+    movie.studios = [];
+  } else {
+    movie.studios = studios;
+  }
+
+
   
   return res.status(200).json(movie);
 });
@@ -292,6 +324,15 @@ app.get('/api/sql/movies', async (req, res, next) => {
 
   return res.status(200).json(movies);
 
+});
+
+
+
+
+app.get('/api/mongodb/movies', async (req, res, next) => {
+  const movies = mongo.Movies.collection.find();
+  console.log(movies);
+  return res.status(200).json(movies);
 })
 
 
