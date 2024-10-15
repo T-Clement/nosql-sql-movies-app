@@ -3,7 +3,7 @@ const pool = require('../config/sqlite');
 
 
 class MoviesSQL {
-    constructor (movie_id, title, title_fr, year, description, description_fr) {
+    constructor (movie_id, title, title_fr = null, year, description, description_fr = null) {
         this.movie_id = movie_id;
         this.title = title;
         this.title_fr = title_fr;

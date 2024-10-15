@@ -1,21 +1,8 @@
 const express = require('express');
-const path = require('path');
+
 
 const sqlite3 = require("sqlite3").verbose();
-
-const db_name = path.join(__dirname, "data", "database.sqlite");
-
-
-const db = new sqlite3.Database(db_name, err => {
-  if (err) {
-    return console.error(err.message);
-  }
-
-  console.log("Connexion réussie à la base de données 'database.sqlite'");
-});
-
-
-
+const db = require('./config/sqlite');
 
 
 
@@ -41,8 +28,8 @@ sqlite3.Database.prototype.getAsync = function (sql, ...params) {
 
 
 sqlite3.Database.prototype.runBatchAsync = function (statements) {
-    var results = [];
-    var batch = ['BEGIN', ...statements, 'COMMIT'];
+    let results = [];
+    let batch = ['BEGIN', ...statements, 'COMMIT'];
     return batch.reduce((chain, statement) => chain.then(result => {
         results.push(result);
         return db.runAsync(...[].concat(statement));
