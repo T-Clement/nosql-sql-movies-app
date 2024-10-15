@@ -1,21 +1,21 @@
-  const express = require('express');
-  const path = require('path');
+const express = require('express');
+const path = require('path');
 
-  const sqlite3 = require("sqlite3").verbose();
+const sqlite3 = require("sqlite3").verbose();
 
-  const db_name = path.join(__dirname, "data", "database.sqlite");
+const db_name = path.join(__dirname, "data", "database.sqlite");
+
+
+const db = new sqlite3.Database(db_name, err => {
+  if (err) {
+    return console.error(err.message);
+  }
 
   
-  const db = new sqlite3.Database(db_name, err => {
-    if (err) {
-      return console.error(err.message);
-    }
-
-    
 
 
-    console.log("Connexion réussie à la base de données 'database.sqlite'");
-  });
+  console.log("Connexion réussie à la base de données 'database.sqlite'");
+});
 
 
 
@@ -23,86 +23,86 @@
 
 
 
-  sqlite3.Database.prototype.runAsync = function (sql, ...params) {
-      return new Promise((resolve, reject) => {
-          this.run(sql, params, function (err) {
-              if (err) return reject(err);
-              resolve(this);
-          });
-      });
-  };
-
-
-  sqlite3.Database.prototype.getAsync = function (sql, ...params) {
+sqlite3.Database.prototype.runAsync = function (sql, ...params) {
     return new Promise((resolve, reject) => {
-      this.get(sql, params, function (err, row) {
-        if (err) return reject(err);
-        resolve(row);
-      });
+        this.run(sql, params, function (err) {
+            if (err) return reject(err);
+            resolve(this);
+        });
     });
-  };
+};
 
 
-  sqlite3.Database.prototype.runBatchAsync = function (statements) {
-      var results = [];
-      var batch = ['BEGIN', ...statements, 'COMMIT'];
-      return batch.reduce((chain, statement) => chain.then(result => {
-          results.push(result);
-          return db.runAsync(...[].concat(statement));
-      }), Promise.resolve())
-      .catch(err => db.runAsync('ROLLBACK').then(() => Promise.reject(err +
-          ' in statement #' + results.length)))
-      .then(() => results.slice(2));
-  };
+sqlite3.Database.prototype.getAsync = function (sql, ...params) {
+  return new Promise((resolve, reject) => {
+    this.get(sql, params, function (err, row) {
+      if (err) return reject(err);
+      resolve(row);
+    });
+  });
+};
 
 
-
-
-
-  let sql_create_actors = `CREATE TABLE IF NOT EXISTS actors (
-    actor_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    firstname VARCHAR(100) NOT NULL,
-    lastname VARCHAR(100) NOT NULL,
-    biographie TEXT
-  );`;
-
-
-  let sql_create_movies = `CREATE TABLE IF NOT EXISTS movies (
-    movie_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title VARCHAR(200) NOT NULL,
-    title_fr VARCHAR(200),
-    year DATETIME NOT NULL,
-    description TEXT NOT NULL,
-    description_fr TEXT
-  );`;
-
-
-  let sql_create_studios = `CREATE TABLE IF NOT EXISTS studios (
-    studio_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(200) NOT NULL
-  );`;
-
-
-  let sql_create_directors = `CREATE TABLE IF NOT EXISTS directors (
-    director_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    firstname VARCHAR(100) NOT NULL,
-    lastname VARCHAR(100) NOT NULL
-  );`;
-
-
-  let sql_create_genres = `CREATE TABLE IF NOT EXISTS genres (
-    genre_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(100) NOT NULL
-  );`;
+sqlite3.Database.prototype.runBatchAsync = function (statements) {
+    var results = [];
+    var batch = ['BEGIN', ...statements, 'COMMIT'];
+    return batch.reduce((chain, statement) => chain.then(result => {
+        results.push(result);
+        return db.runAsync(...[].concat(statement));
+    }), Promise.resolve())
+    .catch(err => db.runAsync('ROLLBACK').then(() => Promise.reject(err +
+        ' in statement #' + results.length)))
+    .then(() => results.slice(2));
+};
 
 
 
-  let sql_create_actors_movies = `CREATE TABLE IF NOT EXISTS actors_movies (
-    actor_id INTEGER,
-    movie_id INTEGER,
-    FOREIGN KEY(actor_id) REFERENCES actors(actor_id),
-    FOREIGN KEY(movie_id) REFERENCES movies(movie_id)
-  );`;
+
+
+let sql_create_actors = `CREATE TABLE IF NOT EXISTS actors (
+  actor_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  firstname VARCHAR(100) NOT NULL,
+  lastname VARCHAR(100) NOT NULL,
+  biographie TEXT
+);`;
+
+
+let sql_create_movies = `CREATE TABLE IF NOT EXISTS movies (
+  movie_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title VARCHAR(200) NOT NULL,
+  title_fr VARCHAR(200),
+  year DATETIME NOT NULL,
+  description TEXT NOT NULL,
+  description_fr TEXT
+);`;
+
+
+let sql_create_studios = `CREATE TABLE IF NOT EXISTS studios (
+  studio_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name VARCHAR(200) NOT NULL
+);`;
+
+
+let sql_create_directors = `CREATE TABLE IF NOT EXISTS directors (
+  director_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  firstname VARCHAR(100) NOT NULL,
+  lastname VARCHAR(100) NOT NULL
+);`;
+
+
+let sql_create_genres = `CREATE TABLE IF NOT EXISTS genres (
+  genre_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name VARCHAR(100) NOT NULL
+);`;
+
+
+
+let sql_create_actors_movies = `CREATE TABLE IF NOT EXISTS actors_movies (
+  actor_id INTEGER,
+  movie_id INTEGER,
+  FOREIGN KEY(actor_id) REFERENCES actors(actor_id),
+  FOREIGN KEY(movie_id) REFERENCES movies(movie_id)
+);`;
 
 
 let sql_create_directors_movies = `CREATE TABLE IF NOT EXISTS directors_movies (
@@ -209,36 +209,36 @@ let sql_values_movies_studios = `INSERT INTO movies_studios (movie_id, studio_id
 `;
 
 
-  let statements = [
-    sql_create_actors,
-    sql_create_directors,
-    sql_create_genres,
-    sql_create_movies,
-    sql_create_studios,
-    sql_create_actors_movies,
-    sql_create_directors_movies,
-    sql_create_genres_movies,
-    sql_create_movies_studios,
-  ];
+let statements = [
+  sql_create_actors,
+  sql_create_directors,
+  sql_create_genres,
+  sql_create_movies,
+  sql_create_studios,
+  sql_create_actors_movies,
+  sql_create_directors_movies,
+  sql_create_genres_movies,
+  sql_create_movies_studios,
+];
 
 
-  let statements_values = [
-    sql_values_actors,
-    sql_values_directors,
-    sql_values_genres,
-    sql_values_movies,
-    sql_values_actors_movies,
-    sql_values_directors_movies,
-    sql_values_genres_movies,
-    sql_values_movies_studios
-  ];
+let statements_values = [
+  sql_values_actors,
+  sql_values_directors,
+  sql_values_genres,
+  sql_values_movies,
+  sql_values_actors_movies,
+  sql_values_directors_movies,
+  sql_values_genres_movies,
+  sql_values_movies_studios
+];
 
 
 
-  db.runBatchAsync(statements)
+db.runBatchAsync(statements)
   .then(results => {
     console.log("Tables créées avec succès ou déjà présentes.")
-    console.log(results);
+    // console.log(results);
     return db.getAsync("SELECT COUNT(*) as count FROM actors");
 
   }).then(row => {
@@ -251,7 +251,7 @@ let sql_values_movies_studios = `INSERT INTO movies_studios (movie_id, studio_id
       })
 
     } else {
-      console.log("Aucune insertion nécessaire, les données existent déjà.");
+      console.log("SQL : Aucune insertion nécessaire, les données existent déjà.");
     }
   })
   .catch(err => {
@@ -259,28 +259,79 @@ let sql_values_movies_studios = `INSERT INTO movies_studios (movie_id, studio_id
   });
 
 
+// MONGO DB CONNECTION
+
+// const { MongoClient, ServerApiVersion } = require("mongodb");
+// // Replace the placeholder with your Atlas connection string
+// const uri = 'mongodb://localhost:27017/';
+// // Create a MongoClient with a MongoClientOptions object to set the Stable API version
+// const client = new MongoClient(uri,  {
+//         serverApi: {
+//             version: ServerApiVersion.v1,
+//             strict: true,
+//             deprecationErrors: true,
+//         }
+//     }
+// );
+
+// async function run() {
+//   try {
+//     // Connect the client to the server (optional starting in v4.7)
+//     await client.connect();
+//     // Send a ping to confirm a successful connection
+//     await client.db("admin").command({ ping: 1 });
+
+
+//     const database = client.db("netfluuux");
+//     const movies = database.collection("movies");
+
+//     // console.log(movies);
+
+
+
+//     console.log("Pinged your deployment. You successfully connected to MongoDB!");
+//   } finally {
+//     // Ensures that the client will close when you finish/error
+//     await client.close();
+//   }
+// }
+// run().catch(console.dir);
+
+
+const mongo = require('./config/mongodb');
+
+async function start() {
+  // other app startup stuff...
+  await mongo.init();
+  // other app startup stuff...
+}
+start();
+
+
+const app = express();
+const port = 3000;
+
+
+// app.cors()
+const cors = require('cors')
+
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200 
+}
+
+
+app.get('/', cors(corsOptions), (req, res) => {
+  res.send('Hello World!');
+});
+
+
+// app.get()
 
 
 
 
-  const app = express();
-  const port = 3000;
 
-
-  // app.cors()
-  const cors = require('cors')
-
-  const corsOptions = {
-    origin: '*',
-    optionsSuccessStatus: 200 
-  }
-
-
-  app.get('/', cors(corsOptions), (req, res) => {
-    res.send('Hello World!');
-  })
-
-
-  app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-  })
+app.listen(port, () => {
+  console.log(`App listening on port ${port}`);
+});
