@@ -5,7 +5,13 @@
     "genre": ["Fantasy", "Action", "Adventure"],
     "description_fr": "Un Hobbit du Comté et ses huit compagnons se mettent en route pour détruire le puissant anneau unique et sauver la Terre du Milieu du terrible Sauron.",
     "description": "A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.",
-    "director": ["Peter Jackson"], 
+    "director": [
+        {
+            "director_id": 1,
+            "lastname": "Jackson", 
+            "firstname": "Peter"
+        }
+    ], 
     "actors": [
         {
             "actor_id": 1,
