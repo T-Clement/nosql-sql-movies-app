@@ -98,7 +98,7 @@ class MongoBot {
     if(await moviesCollection.countDocuments() === 0) {
       const movies = [
         {
-          title: "The Lord of the Rings: The Fellowship of the Ring",
+          title: "The Lord of the Rings: The Fellowship of the Ring(MongoDB)",
           title_fr: "Le Seigneur des Anneaux: La Communauté de l'Anneau",
           year: "2001",
           description: "A young hobbit, Frodo, is tasked with destroying a powerful ring to prevent it from falling into the wrong hands.",

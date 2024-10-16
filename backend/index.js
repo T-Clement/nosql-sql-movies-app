@@ -27,7 +27,7 @@ start();
 
 const MoviesSQL = require('./models/MoviesSQL');
 
-// const cors = require('cors');
+const cors = require('cors');
 // const corsOptions = {
 //   origin: '*',
 //   optionsSuccessStatus: 200 
@@ -37,6 +37,13 @@ const MoviesSQL = require('./models/MoviesSQL');
 // app.get('/', cors(corsOptions), (req, res) => {
 //   res.send('Hello World!');
 // });
+
+app.use(cors({
+  origin: `http://127.0.0.1:5173`,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  // credentials: true,
+}));
+
 
 
 const moviesSqlRoutes = require('./routes/moviesSQL');
