@@ -243,19 +243,7 @@ db.runBatchAsync(statements)
   });
 
 
-// MONGO DB CONNECTION
 
-const mongo = require('./config/mongodb');
-
-async function start() {
-  // other app startup stuff...
-  await mongo.init();
-
-  
-
-  // other app startup stuff...
-}
-start();
 
 
 const app = express();
@@ -331,11 +319,37 @@ app.get('/api/sql/movies', async (req, res, next) => {
 
 
 
+// MONGO DB CONNECTION
+
+const mongo = require('./config/mongodb');
+
+async function start() {
+  // other app startup stuff...
+  await mongo.init();
+
+  
+
+  // other app startup stuff...
+}
+start();
+
+
+// app.get('/api/mongodb/movies', async (req, res, next) => {
+//   const movies = await 
+// });
+
+
 
 app.get('/api/mongodb/movies', async (req, res, next) => {
-  const movies = mongo.Movies.getMovies();
+  const movies = await mongo.MoviesMongo.getMovies();
+  console.log(movies);
   return res.status(200).json(movies);
-})
+});
+
+app.get('/api/mongodb/movies/:id', async (req, res, next) => {
+  const movie = await mongo.MoviesMongo.getMovie(req.params.id);
+  return res.status(200).json(movie);
+});
 
 
 
