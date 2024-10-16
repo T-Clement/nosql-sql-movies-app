@@ -23,12 +23,12 @@ class MoviesMongo {
 
 
     async getMovie(movie_id) {
-        console.log(movie_id);
+        // console.log(movie_id);
         const o_id = ObjectId.createFromHexString(movie_id);
-        console.log(o_id);
+        // console.log(o_id);
         // collection.update({'_id': o_id});
         const movie = await this.collection.findOne({_id: o_id});
-        console.log(movie);
+        // console.log(movie);
         return movie;
 
 

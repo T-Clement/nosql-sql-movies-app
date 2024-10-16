@@ -1,0 +1,104 @@
+const MoviesSQL = require('../models/MoviesSQL');
+
+
+
+exports.show = async (req, res, next) => {
+    const movie_id = parseInt(req.params.id);
+
+    const movie = await MoviesSQL.getMovie(movie_id);
+    if (!movie) {
+        return res.status(404).json({});
+    }
+
+    // get complementary data
+    const actors = await MoviesSQL.getMovieActors(movie_id);
+
+    // add actors data to movie object 
+    if (!actors) {
+        movie.actors = [];
+    } else {
+        movie.actors = actors;
+    }
+
+
+
+    const genres = await MoviesSQL.getMovieGenres(movie_id);
+    // add genres to movie object
+    if (!genres) {
+        movie.genres = [];
+    } else {
+        movie.genres = genres;
+    }
+
+
+    const studios = await MoviesSQL.getMovieStudios(movie_id);
+    // add studios to movie object
+    if (!studios) {
+        movie.studios = [];
+    } else {
+        movie.studios = studios;
+    }
+
+
+
+    return res.status(200).json(movie);
+}
+
+
+
+exports.index = async (req, res, next) => {
+    let movies = await MoviesSQL.getMovies();
+    // console.log("test");
+    // console.log(movies);
+
+    if (!movies) {
+        return res.send(200).json([]);
+    }
+
+
+    let dfsdsmovies = movies.map(async (movie) => {
+        // console.log(movie)
+
+
+        // add actors to movie object
+        const actors = await MoviesSQL.getMovieActors(movie.movie_id);
+        if (!actors) {
+            movie.actors = [];
+        } else {
+            movie.actors = actors;
+        }
+
+        // add genres to movie object
+        const genres = await MoviesSQL.getMovieGenres(movie.movie_id);
+        if (!genres) {
+            movie.genres = [];
+        } else {
+            movie.genres = genres;
+        }
+    
+    
+        // add studios to movie object
+        const studios = await MoviesSQL.getMovieStudios(movie.movie_id);
+        if (!studios) {
+            movie.studios = [];
+        } else {
+            movie.studios = studios;
+        }
+
+
+        // RETURN MOVIE WITH COMPLEMENTARY DATA
+
+        console.log(movie);
+
+        // movie transformer qui prend un object plus une liste de champs à afficher
+        // function transform(object, fields = []) {
+
+        // }
+
+        // return transform(movie, ['id', 'title'])
+
+        return movie;
+    });
+
+    return res.status(200).json(movies);
+}
