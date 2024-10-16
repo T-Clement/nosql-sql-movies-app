@@ -43,9 +43,14 @@ const moviesSqlRoutes = require('./routes/moviesSQL');
 const moviesNoSqlRoutes = require('./routes/moviesNoSQL');
 
 
+
+// ------------------------------------------------
 // ROUTES FOR MOVIES
+// ------------------------------------------------
+
 // SQLITE
 app.use('/api/sql/movies/', moviesSqlRoutes);
+
 // MONGODB
 app.use('/api/mongodb/movies', moviesNoSqlRoutes);
 

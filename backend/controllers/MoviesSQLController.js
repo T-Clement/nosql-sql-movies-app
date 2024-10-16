@@ -50,13 +50,30 @@ exports.index = async (req, res, next) => {
     let movies = await MoviesSQL.getMovies();
     // console.log("test");
     // console.log(movies);
+    console.log(movies);
+
 
     if (!movies) {
         return res.send(200).json([]);
     }
 
 
-    let dfsdsmovies = movies.map(async (movie) => {
+
+
+    // PERMET d'ECONOMISER DES REQUETES
+    // PERMET d'ECONOMISER DES REQUETES
+
+    // optimiser en récupérant les différents acteurs pour ce film pour tous les films
+    // idem pour les genres et les studios
+
+    // ensuite boucler sur chaque tableau pour construire l'objet 
+    
+    
+    // PERMET d'ECONOMISER DES REQUETES
+    // PERMET d'ECONOMISER DES REQUETES
+
+
+    let moviesWithJoins = await Promise.all(movies.map(async (movie) => {
         // console.log(movie)
 
 
@@ -88,7 +105,7 @@ exports.index = async (req, res, next) => {
 
         // RETURN MOVIE WITH COMPLEMENTARY DATA
 
-        console.log(movie);
+        // console.log(movie);
 
         // movie transformer qui prend un object plus une liste de champs à afficher
         // function transform(object, fields = []) {
@@ -98,7 +115,9 @@ exports.index = async (req, res, next) => {
         // return transform(movie, ['id', 'title'])
 
         return movie;
-    });
+    }));
 
-    return res.status(200).json(movies);
+    console.log(moviesWithJoins);
+
+    return res.status(200).json(moviesWithJoins);
 }
