@@ -5,6 +5,7 @@ import DefaultLayout from "./layouts/DefaultLayout";
 import Movie from "./pages/Movie";
 import Actors from "./pages/Actors";
 import Actor from "./pages/Actor";
+import AddMovie from "./pages/AddMovie";
 
 
 
@@ -24,6 +25,10 @@ export default function App() {
           index: true, 
           element: <Home />,
 
+        },
+        {
+          path: "/movies/new",
+          element: <AddMovie />
         },
         {
           path: "/movies/:id",

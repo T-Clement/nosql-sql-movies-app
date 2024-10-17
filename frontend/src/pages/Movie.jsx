@@ -61,7 +61,6 @@ export default function Movie() {
                             <kbd><a href={`/genres/${genre.id ? genre.id : genre.name}`}>{genre.name}</a></kbd>
                         </p>)}
                     </div>
-                    <p><a href={`/movies/${movie._id ? movie._id : movie.movie_id}`}>Fiche détaillée</a></p>
                 </footer>
             </article>
         </div>

@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useDatabaseMode } from '../../hooks/databaseModeContext';
 import { Link } from 'react-router-dom';
+import AddMovieButton from '../components/AddMovieButton';
 
 
 
@@ -37,9 +38,8 @@ function Home() {
 
             <div>
                 <p>{databaseMode}</p>
-                {/* <ul>
-            {movies?.map((movie) => <li key={movie._id ? movie._id : movie.movie_id}>{movie.title}</li>)}
-          </ul> */}
+
+                <AddMovieButton />
 
                 <div className='grid'>
                     {movies?.map((movie) => (

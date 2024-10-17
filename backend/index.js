@@ -48,8 +48,8 @@ app.use(cors({
 
 const moviesSqlRoutes = require('./routes/moviesSQL');
 const moviesNoSqlRoutes = require('./routes/moviesNoSQL');
-
-
+const actorsSqlRoutes = require('./routes/actorsSQL');
+const actorsNoSqlRoutes = require('./routes/actorsNoSQL');
 
 // ------------------------------------------------
 // ROUTES FOR MOVIES
@@ -57,9 +57,11 @@ const moviesNoSqlRoutes = require('./routes/moviesNoSQL');
 
 // SQLITE
 app.use('/api/sql/movies/', moviesSqlRoutes);
+app.use('/api/sql/actors/', actorsSqlRoutes);
 
 // MONGODB
 app.use('/api/mongodb/movies', moviesNoSqlRoutes);
+app.use('/api/mongodb/actors', actorsNoSqlRoutes);
 
 
 

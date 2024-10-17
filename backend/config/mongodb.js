@@ -20,7 +20,7 @@ class MongoBot {
         this.ActorsMongo = new ActorsMongo(this.db);
         this.DirectorsMongo = new DirectorsMongo(this.db);
         this.MoviesMongo = new MoviesMongo(this.db);
-
+        
 
         await this.setupDatabase();
 
