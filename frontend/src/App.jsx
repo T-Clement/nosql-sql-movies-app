@@ -5,7 +5,7 @@ import ThemeToggle from './components/ThemeToggle';
 
 
 const pillsStyle = {
-  border: "1px solid black",
+  // border: "1px solid black",
   padding: "6px",
   backgroundColor: "rgb(82, 95, 122)",
   borderRadius: "8px",
@@ -27,6 +27,9 @@ function App() {
       return response.json();
     },
   });
+
+
+  console.log(movies)
 
   if (isLoading) return 'Loading...';
 
@@ -72,15 +75,21 @@ function App() {
             {movies?.map((movie) => (
               <article key={movie._id ? movie._id : movie.movie_id}>
                 <header>
-                  {movie.title}
+                  <hgroup>
+                    <h3>{movie.title}</h3>
+                    <p><i>{movie.year}</i></p>
+
+                  </hgroup>
                 </header>
                   {/* <img /> */}
-                  Placer une image ici
-                  <div>
-                    {movie.genres.map(genre => <p key={movie._id ? movie._id + genre.name : movie.movie_id + genre.name}><span style={pillsStyle}>{genre.name}</span></p>)}
-                  </div>
+                  <kbd>Placer une image ici</kbd>
+                  
                 <footer>
-                  <a href={`/movies/${movie._id ? movie._id : movie.movie_id}`}>Fiche détaillée</a>
+                  {movie.genres.map(genre => <p key={movie._id ? movie._id + genre.name : movie.movie_id + genre.name}>
+                    {/* <span style={pillsStyle}><a href={`/genres/${genre.id}`}>{genre.name}</a></span> */}
+                    <kbd><a href={`/genres/${genre.id}`}>{genre.name}</a></kbd>
+                    </p>)}
+                  <p><a href={`/movies/${movie._id ? movie._id : movie.movie_id}`}>Fiche détaillée</a></p>
                 </footer>
               </article>
             ))}
