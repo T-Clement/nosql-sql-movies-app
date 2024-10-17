@@ -7,7 +7,7 @@ const GenresControllerSQL = require("../controllers/GenresSQLController");
 router.get('/', GenresControllerSQL.index);
 // router.get('/:id', GenresControllerSQL.show);
 
-router.post('/store', GenresControllerSQL.store);
+// router.post('/store', GenresControllerSQL.store);
 
 
 

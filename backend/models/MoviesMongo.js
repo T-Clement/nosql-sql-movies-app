@@ -62,7 +62,11 @@ class MoviesMongo {
 
     
 
-
+    async getDistinctGenres() {
+      // const genres = await this.collection.find().toArray();
+      const genres = await this.collection.distinct('genres.name');
+      return genres;
+    }
 
 
   }

@@ -21,8 +21,8 @@ class MongoBot {
         this.DirectorsMongo = new DirectorsMongo(this.db);
         this.MoviesMongo = new MoviesMongo(this.db);
         
-
         await this.setupDatabase();
+        return this.db
 
     } catch(error) {
         console.error(error);

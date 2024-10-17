@@ -9,34 +9,30 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 
+// REDIS CONNECTION
+const initRedis = require('./config/redis');
 
 
 // MONGO DB CONNECTION
 
 const mongo = require('./config/mongodb');
 
+
 async function start() {
   // other app startup stuff...
-  await mongo.init();
+  const mongoClient = await mongo.init();
+  const redisClient = await initRedis();
 
-  
+  return {
+    mongoClient,
+    redisClient
+  }
 
   // other app startup stuff...
 }
-start();
 
-const MoviesSQL = require('./models/MoviesSQL');
 
 const cors = require('cors');
-// const corsOptions = {
-//   origin: '*',
-//   optionsSuccessStatus: 200 
-// }
-
-
-// app.get('/', cors(corsOptions), (req, res) => {
-//   res.send('Hello World!');
-// });
 
 app.use(cors({
   origin: `http://127.0.0.1:5173`,
@@ -51,6 +47,8 @@ const moviesNoSqlRoutes = require('./routes/moviesNoSQL');
 const actorsSqlRoutes = require('./routes/actorsSQL');
 const actorsNoSqlRoutes = require('./routes/actorsNoSQL');
 
+const genresSqlRoutes = require('./routes/genresSQL');
+
 // ------------------------------------------------
 // ROUTES FOR MOVIES
 // ------------------------------------------------
@@ -58,10 +56,52 @@ const actorsNoSqlRoutes = require('./routes/actorsNoSQL');
 // SQLITE
 app.use('/api/sql/movies/', moviesSqlRoutes);
 app.use('/api/sql/actors/', actorsSqlRoutes);
+app.use('/api/sql/genres/', genresSqlRoutes);
+
 
 // MONGODB
 app.use('/api/mongodb/movies', moviesNoSqlRoutes);
 app.use('/api/mongodb/actors', actorsNoSqlRoutes);
+
+
+let mongoClient, redisClient
+start().then(async (clients) => {
+  mongoClient = clients.mongoClient
+  /** @var RedisClientType redisclient */
+  redisClient = clients.redisClient
+
+})
+
+
+app.get("/api/mongodb/genres", async (req, res, next) => {
+
+  const cachedGenres = await redisClient.get("genres");
+  // console.log(cachedGenres);
+
+
+  if(cachedGenres) {
+    console.log("Données en cache :", cachedGenres);
+    return res.status(200).json(JSON.parse(cachedGenres));
+  }
+
+
+  // const genres = await mongo.MoviesMongo.getDistinctGenres();
+  const genres = await mongoClient.collection("movies").distinct('genres.name');
+  if(!genres) {
+    return res.status(200).json([]); 
+  } 
+
+  // store data in redis 
+  await redisClient.set("genres", JSON.stringify(genres), {
+    EX: 3600 // expires after 1 hour
+  });
+
+  console.log("Genres retrieved from MongoDB and cached in Redis for futures request");
+
+  
+  return res.status(200).json(genres);
+});
+
 
 
 
