@@ -17,38 +17,83 @@ export default function AddMovie() {
         queryKey: ['actors', databaseMode], // use databasemode as dependance of queryKey, if mode change query is refetch
         queryFn: async () => {
             const response = await fetch(`http://localhost:3000/api/${databaseMode}/actors`);
-            console.log(response.json());
-            return response.json();
+            // console.log(response.json());
+            const responseJson = await response.json();
+
+            const formattedActors = responseJson.map(actor => ({ id: actor._id || actor.actor_id, firstname: actor.firstname, lastname: actor.lastname}));
+            return formattedActors;
         },
     });
+    console.log(actors)
+
+    if (isLoading) return <span aria-busy="true">Fetching data ...</span>;
+
+    if (error) return 'An error has occurred: ' + error.message
+
+    const options = actors.map(actor => ({value: actor.id, label: `${actor.firstname} ${actor.lastname}`}));
 
 
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
-]
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(e.target.values);
+    }
 
 
   return (
     <div>
         <h2>Current Database : <kbd>{databaseMode}</kbd></h2>
 
+        <section>
 
-        <form>
-            <Select options={options} />
-            {/* <select aria-label="Select your favorite snacks..." multiple size="6">
-                <option disabled>
-                    Select your favorite snacks...
-                </option>
-                <option>Cheese</option>
-                <option selected>Fruits</option>
-                <option selected>Nuts</option>
-                <option>Chocolate</option>
-                <option>Crackers</option>
-            </select> */}
-        </form>
+            <h3>Register a New Movie</h3>
+
+            <form onSubmit={handleSubmit}>
+                <fieldset>
+                    
+                    <label>
+                        Actors :
+                        <Select isMulti name="actors" options={options} />
+                    </label>
+
+                    <label>
+                        Genres :
+                        <Select isMulti name="actors" options={options} />
+                    </label>
+
+                    <label>
+                        Directors :
+                        <Select isMulti name="actors" options={options} />
+                    </label>
+
+                    <label>
+                        Studios :
+                        <Select isMulti name="actors" options={options} />
+                    </label>
+
+                    <label>
+                        Movie Title :
+                        <input type="text"  required/>
+                    </label>
+                    
+                    <label>
+                        Movie Resume :
+                        <input type="text" />
+                    </label>
+
+                    <label>
+                        Release Date :
+                        <input type="date"  required/>
+                    </label>
+
+                </fieldset>
+
+
+                <input type='submit' value="Register" />
+            </form>
+
+        </section>
         
         
     </div>
