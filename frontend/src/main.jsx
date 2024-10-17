@@ -15,6 +15,10 @@ import { DatabaseModeProvider } from '../hooks/databaseModeContext'
 
 
 
+
+
+
+
 const queryClient = new QueryClient(); 
 
 createRoot(document.getElementById('root')).render(
@@ -23,6 +27,8 @@ createRoot(document.getElementById('root')).render(
       <DatabaseModeProvider >
       
         <App />
+
+
         <ReactQueryDevtools initialIsOpen={false} />
 
       </DatabaseModeProvider>
