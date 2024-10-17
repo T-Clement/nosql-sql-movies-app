@@ -1,5 +1,6 @@
 // import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 // import { useState } from 'react'
+import { NavLink } from 'react-router-dom';
 import { useDatabaseMode } from '../../hooks/databaseModeContext';
 import ThemeToggle from './ThemeToggle';
 
@@ -16,15 +17,15 @@ const { databaseMode, toggleDatabaseMode } = useDatabaseMode();
       <header className="container">
         <nav>
           <ul>
-            <li><strong>Netfluux</strong></li>
+            <li><NavLink to='/'><strong>Netfluux</strong></NavLink></li>
             <li><ThemeToggle/></li>
 
             <li><button onClick={toggleDatabaseMode}>{databaseMode}</button></li>
           </ul>
           <ul>
-            <li><a href="/" aria-current="page">Home</a></li>
-            <li><a href="/actors">Actors</a></li>
-            <li><a href="/genres">Genres</a></li>
+            <li><NavLink to="/" aria-current="page">Home</NavLink></li>
+            <li><NavLink to="/actors">Actors</NavLink></li>
+            <li><NavLink to="/genres">Genres</NavLink></li>
           </ul>
         </nav>
       </header>

@@ -5,9 +5,15 @@ import { useParams } from 'react-router-dom';
 
 export default function Movie() {
 
-    const {databaseMode} = useDatabaseMode();
+    const { databaseMode } = useDatabaseMode();
 
-    const {id} = useParams();
+    console.log(databaseMode);
+    const { id } = useParams();
+
+
+
+    // disable switch database button to avoid 404
+
 
 
     const { data: movie, isLoading, error } = useQuery({
@@ -22,7 +28,42 @@ export default function Movie() {
     console.log(movie);
 
 
+    if (isLoading) return <span aria-busy="true">Fetching data ...</span>;
+
+
+    if (error) return 'An error has occurred: ' + error.message
+
+
     return (
-        <div>Movie</div>
+        <div>
+            <article key={movie._id ? movie._id : movie.movie_id}>
+                <header>
+                    <hgroup>
+                        <h3>{movie.title}</h3>
+                        <p><i>{movie.year}</i></p>
+
+                    </hgroup>
+                </header>
+                {/* <img /> */}
+                <kbd>Placer une image ici</kbd>
+                <p>{movie.description}</p>
+                <footer>
+                    <div>
+                        <p>Actors :</p>
+                        {movie.actors.map(actor => <p key={actor._id ? actor._id : actor.actor_id }>
+                            <kbd><a href={`/actors/${actor._id ? actor._id : actor.actor_id }`}>{actor.firstname} {actor.lastname}</a></kbd>
+                        </p>)}
+                    </div>
+                    <div>
+                        <p>Genres :</p>
+                        {movie.genres.map(genre => <p key={movie._id ? movie._id + genre.name : movie.movie_id + genre.name}>
+                            {/* <span style={pillsStyle}><a href={`/genres/${genre.id}`}>{genre.name}</a></span> */}
+                            <kbd><a href={`/genres/${genre.id ? genre.id : genre.name}`}>{genre.name}</a></kbd>
+                        </p>)}
+                    </div>
+                    <p><a href={`/movies/${movie._id ? movie._id : movie.movie_id}`}>Fiche détaillée</a></p>
+                </footer>
+            </article>
+        </div>
     )
 }

@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useDatabaseMode } from '../../hooks/databaseModeContext';
+import { Link } from 'react-router-dom';
 
 
 
@@ -56,9 +57,9 @@ function Home() {
                             <footer>
                                 {movie.genres.map(genre => <p key={movie._id ? movie._id + genre.name : movie.movie_id + genre.name}>
                                     {/* <span style={pillsStyle}><a href={`/genres/${genre.id}`}>{genre.name}</a></span> */}
-                                    <kbd><a href={`/genres/${genre.id ? genre.id : genre.name}`}>{genre.name}</a></kbd>
+                                    <kbd><Link to={`/genres/${genre.id ? genre.id : genre.name}`}>{genre.name}</Link></kbd>
                                 </p>)}
-                                <p><a href={`/movies/${movie._id ? movie._id : movie.movie_id}`}>Fiche détaillée</a></p>
+                                <p><Link to={`/movies/${movie._id ? movie._id : movie.movie_id}`}>Fiche détaillée</Link></p>
                             </footer>
                         </article>
                     ))}
