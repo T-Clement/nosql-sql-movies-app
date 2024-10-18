@@ -11,6 +11,7 @@ import AddMovie from "./pages/AddMovie";
 import { useRoute } from "../hooks/RouteContext";
 
 import '@picocss/pico'
+import EditActor from "./pages/EditActor";
 
 
 export default function App() {
@@ -44,6 +45,10 @@ export default function App() {
         {
           path: "/actors/:id",
           element: <Actor />,
+        },
+        {
+          path: "/actors/:id/edit",
+          element: <EditActor />
         },
         {
           path: "*",
