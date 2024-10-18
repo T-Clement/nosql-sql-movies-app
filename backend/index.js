@@ -160,7 +160,7 @@ app.post("/api/mongodb/movies/store", async (req, res, next) => {
 
   } catch(error) {
     return res.status(500).json({
-      message: "Ids need to be in ObjectId format for MongoDB"
+      message: "Ids needs to be in ObjectId format for MongoDB"
     })
   }
 

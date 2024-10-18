@@ -21,7 +21,6 @@ export default function Movie() {
 
 
 
-    // disable switch database button to avoid 404
 
 
 
