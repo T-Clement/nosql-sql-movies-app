@@ -15,9 +15,6 @@ export default function AddMovie() {
 
 
 
-
-
-
     const { databaseMode } = useDatabaseMode()
 
     console.log(databaseMode)
@@ -29,6 +26,22 @@ export default function AddMovie() {
     const [movieTitle, setMovieTitle] = useState("");
     const [movieDate, setMovieDate] = useState("");
     const [movieResume, setMovieResume] = useState("");
+
+
+    // reset form fields when database mode change
+    useEffect(() => {
+        setSelectedActors([]);
+        setSelectedGenres([]);
+        setSelectedDirectors([]);
+        setSelectedStudios([]);
+        setMovieTitle('');
+        setMovieDate('');
+        setMovieResume('');
+    }, [databaseMode]);
+
+
+
+
 
 
 
@@ -55,7 +68,7 @@ export default function AddMovie() {
                 queryFn: async () => {
                     const response = await fetch(`http://localhost:3000/api/${databaseMode}/genres`);
                     const data = await response.json();
-                    return data.map(genre => ({ id: genre.id, name: genre.name }));
+                    return data.map(genre => ({ id: databaseMode === 'sql' ? genre.genre_id : genre, name: databaseMode === 'sql' ?  genre.name : genre }));
                 },
             },
             {
@@ -75,7 +88,7 @@ export default function AddMovie() {
                 queryFn: async () => {
                     const response = await fetch(`http://localhost:3000/api/${databaseMode}/studios`);
                     const data = await response.json();
-                    return data.map(studio => ({ id: studio.id, name: studio.name }));
+                    return data.map(studio => ({ id: studio._id || studio.studio_id, name: studio.name }));
                 },
             },
         ]
@@ -121,7 +134,7 @@ export default function AddMovie() {
     }));
 
     const genreOptions = genres.map(genre => ({
-        value: genre.id,
+        value: genre.id ? genre.id : genre,
         label: genre.name,
     }));
 
@@ -148,22 +161,22 @@ export default function AddMovie() {
 
                         <label>
                             Actors :
-                            <Select isMulti name="actors" options={actorOptions} onChange={setSelectedActors} />
+                            <Select isMulti name="actors" options={actorOptions} onChange={setSelectedActors} value={selectedActors}/>
                         </label>
 
                         <label>
                             Genres :
-                            <Select isMulti name="genres" options={genreOptions} onChange={setSelectedGenres} />
+                            <Select isMulti name="genres" options={genreOptions} onChange={setSelectedGenres} value={selectedGenres}/>
                         </label>
 
                         <label>
                             Directors :
-                            <Select isMulti name="directors" options={directorOptions} onChange={setSelectedDirectors} />
+                            <Select isMulti name="directors" options={directorOptions} onChange={setSelectedDirectors} value={selectedDirectors}/>
                         </label>
 
                         <label>
                             Studios :
-                            <Select isMulti name="studios" options={studioOptions} onChange={setSelectedStudios} />
+                            <Select isMulti name="studios" options={studioOptions} onChange={setSelectedStudios} value={selectedStudios}/>
                         </label>
 
                         <label>
@@ -173,7 +186,7 @@ export default function AddMovie() {
 
                         <label>
                             Movie Resume :
-                            <input type="text" name="description" onChange={(e) => setMovieResume(e.target.value)} value={movieResume} />
+                            <textarea rows={10} name="description" onChange={(e) => setMovieResume(e.target.value)} value={movieResume} />
                         </label>
 
                         <label>
