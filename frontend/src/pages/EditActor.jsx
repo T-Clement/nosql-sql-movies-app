@@ -29,8 +29,18 @@ export default function EditActor() {
         queryKey: ['actor', databaseMode], // use databasemode as dependance of queryKey, if mode change query is refetch
         queryFn: async () => {
             const response = await fetch(`http://localhost:3000/api/${databaseMode}/actors/${id}`);
+          
+            if(!response.ok) {
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
+            }
+
             return response.json();
         },
+        onError: (error) => {
+            if(error.message.includes('404')) {
+                navigate('/404');
+            }
+        }
     });
 
     console.log(actor);
@@ -60,6 +70,7 @@ export default function EditActor() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const updatedActor = {
+            id: id,
             firstname: firstName,
             lastname: lastName,
             biographie: bio

@@ -27,3 +27,9 @@ exports.show = async (req, res, next) => {
 }
 
 
+exports.update = async (req, res, next) => {
+    console.log(req.body);
+
+
+    return res.status(200).json({message: 'data received'});
+}

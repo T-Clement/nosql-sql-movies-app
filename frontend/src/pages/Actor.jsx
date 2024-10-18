@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Link, NavLink, useParams } from 'react-router-dom'
+import { Link, NavLink, useNavigate, useParams } from 'react-router-dom'
 import { useRoute } from '../../hooks/RouteContext';
 import { useQuery } from '@tanstack/react-query';
 import { useDatabaseMode } from '../../hooks/databaseModeContext';
@@ -10,6 +10,7 @@ export default function Actor() {
 
   const { databaseMode } = useDatabaseMode();
 
+  const {navigate} = useNavigate();
 
   useEffect(() => {
     setToggleDisabled(true); // toggle database button is active
@@ -22,8 +23,19 @@ export default function Actor() {
     queryKey: ['actor', databaseMode], // use databasemode as dependance of queryKey, if mode change query is refetch
     queryFn: async () => {
       const response = await fetch(`http://localhost:3000/api/${databaseMode}/actors/${id}`);
+      // console.log(response);
+      if(!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
       return response.json();
     },
+    onError: (error) => {
+      if(error.message.includes("404")) {
+        navigate('/404');
+      }
+        
+    }
   });
 
   console.log(actor);

@@ -8,7 +8,7 @@ router.get('/', ActorsControllerSQL.index);
 router.get('/:id', ActorsControllerSQL.show);
 
 // router.post('/store', ActorsControllerSQL.store);
-
+router.put('/:id/update', ActorsControllerSQL.update);
 
 
 // store pour enregistrer,

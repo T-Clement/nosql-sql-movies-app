@@ -13,6 +13,7 @@ import { useRoute } from "../hooks/RouteContext";
 import '@picocss/pico'
 import EditActor from "./pages/EditActor";
 import Genres from "./pages/Genres";
+import Page404 from "./pages/Page404";
 
 
 export default function App() {
@@ -56,7 +57,11 @@ export default function App() {
           element: <Genres />
         },
         {
-          path: "*",
+          path: '404',
+          element: <Page404 />
+        },
+        {
+          path: "/*",
           element: <ErrorPage />
         }
 
