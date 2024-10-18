@@ -252,6 +252,18 @@ app.post("/api/mongodb/movies/store", async (req, res, next) => {
 })
 
 
+app.put("/api/mongodb/actors/:id/update", async (req, res, next) => {
+  const {actorId: id, lastname, firstname, bio: biographie} = req.body;
+
+  console.log(req.body);
+  
+
+  return res.status(200).json({message: "data received :"});
+
+})
+
+
+
 app.get('*', function(req, res){
   res.status(404).json({message: "You're lost !!"});
 });

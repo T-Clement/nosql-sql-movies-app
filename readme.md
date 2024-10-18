@@ -1,5 +1,13 @@
 !!!
-#CORS SET TO 127.0.0.1:5173
+# CORS SET TO 127.0.0.1:5173
+
+# A Redis instance is needed running on port 6379
+
+## To launch Frontend use npm run dev in frontend folder
+
+## To launch Backend use npm start in backend folder
+## (you need a .sqlite file named database.sqlite in the backend/data folder)
+
 !!!
 
 By default, database mode is set to sql, some errors may be occuring if you are consulting a
