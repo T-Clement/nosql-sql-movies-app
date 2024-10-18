@@ -16,3 +16,14 @@ exports.index = async (req, res, next) => {
 
 
 
+exports.show = async (req, res, next) => {
+    let actor = await ActorsSQL.getActor(req.params.id);
+    
+    if(!actor) {
+        return res.status(404).json({message: "No actor for this ID"});
+    }
+
+    return res.status(200).json(actor);
+}
+
+

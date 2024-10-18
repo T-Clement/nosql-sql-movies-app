@@ -32,7 +32,23 @@ class ActorsSQL {
 
     }
 
+    static async getActor(id) {
+        const query = 'SELECT * FROM actors WHERE actor_id = $id';
+        const values = { $id: id };
 
+        return new Promise((resolve, reject) => {
+            db.get(query, values, (err, row) => {
+                if (err) {
+                    console.error("Error finding actor by id: " + err.message);
+                    reject(err); // reject promise if error
+                    // console.log(row);
+                    resolve(null); // resolve promise with row or null if no results
+                } else {
+                    resolve(row);
+                }
+            });
+        });
+    }
 
 
     static async checkActorsExists(actorsIds) {

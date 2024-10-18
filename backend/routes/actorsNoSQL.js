@@ -5,9 +5,9 @@ const ActorsMongoController = require("../controllers/ActorsMongoController");
 
 
 router.get('/', ActorsMongoController.index);
-// router.get('/:id', ActorsControllerSQL.show);
+router.get('/:id', ActorsMongoController.show);
 
-// router.post('/store', ActorsControllerSQL.store);
+// router.post('/store', ActorsMongoController.store);
 
 
 

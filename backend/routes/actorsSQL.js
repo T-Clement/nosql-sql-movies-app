@@ -5,7 +5,7 @@ const ActorsControllerSQL = require("../controllers/ActorsSQLController");
 
 
 router.get('/', ActorsControllerSQL.index);
-// router.get('/:id', ActorsControllerSQL.show);
+router.get('/:id', ActorsControllerSQL.show);
 
 // router.post('/store', ActorsControllerSQL.store);
 
