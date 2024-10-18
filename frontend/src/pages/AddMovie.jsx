@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDatabaseMode } from '../../hooks/databaseModeContext'
 import Select from 'react-select'
-import { useQueries, useQuery } from '@tanstack/react-query'
+import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
 import { useRoute } from '../../hooks/RouteContext';
+import axios from 'axios';
+
+
 
 export default function AddMovie() {
 
@@ -30,6 +33,11 @@ export default function AddMovie() {
 
     // reset form fields when database mode change
     useEffect(() => {
+        resetFormFields();
+    }, [databaseMode]);
+
+
+    const resetFormFields = () => {
         setSelectedActors([]);
         setSelectedGenres([]);
         setSelectedDirectors([]);
@@ -37,14 +45,29 @@ export default function AddMovie() {
         setMovieTitle('');
         setMovieDate('');
         setMovieResume('');
-    }, [databaseMode]);
+    };
 
 
 
+    // ADD A MOVIE 
+    const addMovie = async (newMovie) => {
+        const response = await axios.post(`http://localhost:3000/api/${databaseMode}/movies/store`, newMovie);
+        return response.data;
+    }
 
 
+    const mutation = useMutation({
+        mutationFn: addMovie,
+        onSuccess: (data) => {
+            console.log("Movie added successfully: ", data);
+            resetFormFields();
+        },
+        onError: (error) => {
+            console.error('Error adding movie :', error);
+        }
+    });
 
-
+    const { mutate, isLoading: isSubmitting, isError, isSuccess } = mutation;
 
 
     // parallels request to fetch actors, genres, directors and studios data
@@ -114,17 +137,20 @@ export default function AddMovie() {
         e.preventDefault();
 
         const formData = {
-            title: e.target.title.value,
-            description: e.target.description.value,
-            releaseDate: e.target.relase_date.value,
+            title: movieTitle,
+            description: movieResume,
+            releaseDate: movieDate,
             actors: selectedActors.map(option => option.value),
             genres: selectedGenres.map(option => option.value),
             directors: selectedDirectors.map(option => option.value),
             studios: selectedStudios.map(option => option.value),
         };
 
-        console.log(formData);
+        console.log('Submitted formData :', formData);
         // send formData to backend
+
+        // 
+        mutation.mutate(formData);
     };
 
     // format objects to use it in select
@@ -199,6 +225,11 @@ export default function AddMovie() {
 
                     <input type='submit' value="Register" />
                 </form>
+
+                {isSubmitting && <p>Sending in progress...</p>}
+                {isSuccess && <p>Film successfully added !</p>}
+                {isError && <p>An error happened during film adding process.</p>}
+
 
             </section>
 

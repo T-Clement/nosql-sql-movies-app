@@ -32,6 +32,57 @@ class ActorsSQL {
 
     }
 
+
+
+
+    static async checkActorsExists(actorsIds) {
+
+        // construct placeholders
+        const placeholders = actorsIds.map(() => '?').join(',');
+
+        // construct query
+        const query = `SELECT * FROM actors WHERE actor_id IN (${placeholders});`;
+
+
+        return new Promise((resolve, reject) => {
+            db.all(query, actorsIds, (err, rows) => {
+                if(err) {
+                    console.error('Error when in checkActorsExists :', err.message);
+                    reject(err);
+                } else {
+
+                    // extract founded actors by request
+                    const foundActorsIds = rows.map(row => row.actor_id);
+                     console.log("Ids found in database", foundActorsIds);
+                     
+                     
+                     
+                     // found actors not find by request
+                     const missingActorsIds = actorsIds.filter(id => !foundActorsIds.includes(id));
+                     console.log("Ids missing in database", missingActorsIds);
+                     console.log(missingActorsIds.length);
+
+
+                    if(missingActorsIds.length > 0) {
+
+                        // some actors sended in form not exists in database
+
+                        resolve({
+                            exists: false,
+                            missingActorsIds: missingActorsIds
+                        });
+
+                    } else {
+                        // all actors sended in form exists in database
+                        resolve({exists: true});
+                    }
+
+
+                }
+            })
+        })
+    }
+
 }
 
 module.exports = ActorsSQL;

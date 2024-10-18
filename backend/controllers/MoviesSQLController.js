@@ -1,5 +1,11 @@
 const MoviesSQL = require('../models/MoviesSQL');
 
+const ActorsSQL = require('../models/ActorsSQL');
+const GenresSQL = require('../models/GenresSQL');
+const StudiosSQL = require('../models/StudiosSQL');
+const { Actor } = require('../models/ActorsMongo');
+
+const db = require('../config/sqlite');
 
 
 exports.show = async (req, res, next) => {
@@ -67,8 +73,8 @@ exports.index = async (req, res, next) => {
     // idem pour les genres et les studios
 
     // ensuite boucler sur chaque tableau pour construire l'objet 
-    
-    
+
+
     // PERMET d'ECONOMISER DES REQUETES
     // PERMET d'ECONOMISER DES REQUETES
 
@@ -92,8 +98,8 @@ exports.index = async (req, res, next) => {
         } else {
             movie.genres = genres;
         }
-    
-    
+
+
         // add studios to movie object
         const studios = await MoviesSQL.getMovieStudios(movie.movie_id);
         if (!studios) {
@@ -126,31 +132,165 @@ exports.index = async (req, res, next) => {
 
 
 
-exports.store = async(req, res, next) => {
+exports.store = async (req, res, next) => {
     // title, description, image_url ?, year, 
 
-    const { title, description, year, actors, genres, studios } = req.body;
+    const { title, description, releaseDate, actors, genres, studios } = req.body;
 
-    console.log(title, description, year, actors, genres, studios );
+    console.log(title, description, releaseDate, actors, genres, studios);
 
-
-    // {
-    //     "title": "TEST",
-    //     "year": "2024",
-    //     "description": "This is a test description",
-    //     "actors" : [],
-    //     "genres": [],
-    //     "studios": [] 
-    // }
+    // required fields
+    if (!title || !description || !releaseDate) {
+        return res.status(400).json({ message: 'Title, description, and release date are required.' });
+    }
 
 
-    // const movieToInsert = 
+    try {
+
+        // array of queries executed in transaction
+        let newMovieInsertionsStatements = [];
+
+
+        // check if each actor sended exists
+        if (actors && actors.length > 0) {
+
+            console.log("Actors field not empty, checking exists needed");
+
+            console.log(actors);
+
+            const checkActorsExists = await ActorsSQL.checkActorsExists(actors);
+
+            console.log("checkActorsExists : " + checkActorsExists)
+
+            // return early with missing Actors id in database in JSON
+            if (!checkActorsExists.exists) {
+                return res.status(404).json({
+                    message: "Some actors are not found in database",
+                    actors: checkActorsExists.missingActorsIds
+                });
+            }
+
+
+        }
+
+
+        // check if each genre sended exists
+
+        if (genres && genres.length > 0) {
+
+            const checkGenresExists = await GenresSQL.checkGenresExists(genres);
+
+            if (!checkGenresExists.exists) {
+                return res.status(404).json({
+                    message: "Some genres are not found in database",
+                    genres: checkGenresExists.missingGenresIds
+                });
+            }
+
+
+        }
+
+
+        // check if each studio sended exists
+
+        if (studios && studios.length > 0) {
+            const checkStudiosExists = await StudiosSQL.checkStudiosExists(studios);
+
+            if (!checkStudiosExists.exists) {
+                return res.status(404).json({
+                    message: "Some studios are not found in database",
+                    studios: checkStudiosExists.missingGenresIds
+                });
+            }
+        }
 
 
 
+        // transaction to handle multiple insertions in differents databases
+
+        await db.runAsync('BEGIN TRANSACTION;');
 
 
-    return res.status(200).json({title, description, year, actors, genres, studios });
+        // insert new movie in movie database
+        const insertMovieResult = await db.runAsync(
+            `INSERT INTO movies (title, description, year) VALUES (?, ?, ?)`, 
+            title,
+            description,
+            releaseDate
+        );
+
+        // get id of inserted movie
+        const movieId = insertMovieResult.lastID;
+
+
+        if(actors && actors.length > 0) {
+            for(const actorId of actors) {
+                const actorMoviePromise = db.runAsync(
+                    `INSERT INTO actors_movies (actor_id, movie_id) VALUES (?, ?);`,
+                    actorId,
+                    movieId
+                );
+                newMovieInsertionsStatements.push(actorMoviePromise);
+            }
+        }
+
+        if(studios && studios.length > 0) {
+            for(const studioId of studios) {
+                const studioMoviePromise = db.runAsync(
+                    `INSERT INTO movies_studios (studio_id, movie_id) VALUES (?, ?);`,
+                    studioId,
+                    movieId
+                );
+                newMovieInsertionsStatements.push(studioMoviePromise);
+            }
+        }
+
+        if(genres && genres.length > 0) {
+            for(const genreId of genres) {
+                const genreMoviePromise = db.runAsync(
+                    `INSERT INTO genres_movies (genre_id, movie_id) VALUES (?, ?);`,
+                    genreId,
+                    movieId
+                );
+                newMovieInsertionsStatements.push(genreMoviePromise);
+            }
+        }
+
+
+        await Promise.all(newMovieInsertionsStatements);
+
+        await db.runAsync('COMMIT;');
+
+
+        // END TRANSACTION
+
+
+
+        // destroy variable
+        delete newMovieInsertionsStatements;
+
+
+        return res.status(200).json({ 
+            message: "Movie added successfully",
+            movie: {
+                movie_id: movieId,
+                title,
+                description,
+                releaseDate,
+                actors,
+                genres,
+                studios
+            }
+         });
+
+    } catch (error) {
+
+        await db.runAsync('ROLLBACK');
+        console.error('Error adding a movie: ', error);
+        
+        return res.status(500).json({error: 'An error occured while adding the movie. Rollback.'})
+    }
+
 
 
 

@@ -16,5 +16,17 @@ exports.index = async (req, res, next) => {
 }
 
 
+exports.store = async (req, res, next) => {
+    console.log(req.body);
+
+    const {title, description, actors, directors, genres, studios} = req.body;
+
+    console.log(title, description, actors, directors, genres, studios);
+    // const newMovie = req.boby;
+    // console.log(newMovie);
+
+    return res.status(200).json({title, description, actors, directors, genres, studios});
+
+}
 
 
