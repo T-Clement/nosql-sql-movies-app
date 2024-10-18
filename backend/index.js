@@ -53,7 +53,8 @@ const directorsSqlRoutes = require('./routes/directorsSQL');
 
 const moviesNoSqlRoutes = require('./routes/moviesNoSQL');
 const actorsNoSqlRoutes = require('./routes/actorsNoSQL');
-
+const directorsNoSqlRoutes = require('./routes/directorsNoSQL');
+const studiosNoSqlRoutes = require('./routes/studiosNoSQL');
 
 // ------------------------------------------------
 // ROUTES FOR MOVIES
@@ -69,17 +70,19 @@ app.use('/api/sql/directors/', directorsSqlRoutes);
 // MONGODB
 app.use('/api/mongodb/movies', moviesNoSqlRoutes);
 app.use('/api/mongodb/actors', actorsNoSqlRoutes);
+app.use('/api/mongodb/directors', directorsNoSqlRoutes);
+app.use('/api/mongodb/studios', studiosNoSqlRoutes);
 
-
-let mongoClient, redisClient
+let mongoClient, redisClient;
 start().then(async (clients) => {
   mongoClient = clients.mongoClient
   /** @var RedisClientType redisclient */
   redisClient = clients.redisClient
 
-})
+});
 
 
+// GENRES FOR MONGODB
 app.get("/api/mongodb/genres", async (req, res, next) => {
 
   const cachedGenres = await redisClient.get("genres");
