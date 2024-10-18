@@ -43,11 +43,17 @@ app.use(cors({
 
 
 const moviesSqlRoutes = require('./routes/moviesSQL');
-const moviesNoSqlRoutes = require('./routes/moviesNoSQL');
+const genresSqlRoutes = require('./routes/genresSQL');
 const actorsSqlRoutes = require('./routes/actorsSQL');
+const studiosSqlRoutes = require('./routes/studiosSQL');
+const directorsSqlRoutes = require('./routes/directorsSQL');
+
+
+
+
+const moviesNoSqlRoutes = require('./routes/moviesNoSQL');
 const actorsNoSqlRoutes = require('./routes/actorsNoSQL');
 
-const genresSqlRoutes = require('./routes/genresSQL');
 
 // ------------------------------------------------
 // ROUTES FOR MOVIES
