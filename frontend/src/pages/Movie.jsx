@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect } from 'react'
 import { useDatabaseMode } from '../../hooks/databaseModeContext';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useRoute } from '../../hooks/RouteContext';
 
 export default function Movie() {
@@ -59,14 +59,14 @@ export default function Movie() {
                     <div>
                         <p>Actors :</p>
                         {movie.actors.map(actor => <p key={actor._id ? actor._id : actor.actor_id }>
-                            <kbd><a href={`/actors/${actor._id ? actor._id : actor.actor_id }`}>{actor.firstname} {actor.lastname}</a></kbd>
+                            <kbd><Link to={`/actors/${actor._id ? actor._id : actor.actor_id }`}>{actor.firstname} {actor.lastname}</Link></kbd>
                         </p>)}
                     </div>
                     <div>
                         <p>Genres :</p>
                         {movie.genres.map(genre => <p key={movie._id ? movie._id + genre.name : movie.movie_id + genre.name}>
                             {/* <span style={pillsStyle}><a href={`/genres/${genre.id}`}>{genre.name}</a></span> */}
-                            <kbd><a href={`/genres/${genre.id ? genre.id : genre.name}`}>{genre.name}</a></kbd>
+                            <kbd><Link to={`/genres/${genre.id ? genre.id : genre.name}`}>{genre.name}</Link></kbd>
                         </p>)}
                     </div>
                 </footer>
