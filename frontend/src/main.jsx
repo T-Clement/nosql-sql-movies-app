@@ -6,7 +6,7 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { DatabaseModeProvider } from '../hooks/databaseModeContext'
-
+import { RouteProvider } from '../hooks/RouteContext.jsx';
 
 // const databaseModeContext = createContext("sql");
 
@@ -25,11 +25,13 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <DatabaseModeProvider >
-      
-        <App />
 
+        <RouteProvider>
 
-        <ReactQueryDevtools initialIsOpen={false} />
+          <App />
+          <ReactQueryDevtools initialIsOpen={false} />
+        
+        </RouteProvider>
 
       </DatabaseModeProvider>
 

@@ -1,9 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDatabaseMode } from '../../hooks/databaseModeContext';
 import { useParams } from 'react-router-dom';
+import { useRoute } from '../../hooks/RouteContext';
 
 export default function Movie() {
+
+    const { setToggleDisabled } = useRoute();
+
+
+    useEffect(() => {
+        setToggleDisabled(true); // toggle database button is not active
+    }, [setToggleDisabled]);
+
 
     const { databaseMode } = useDatabaseMode();
 

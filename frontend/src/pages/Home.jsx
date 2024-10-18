@@ -1,13 +1,27 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDatabaseMode } from '../../hooks/databaseModeContext';
 import { Link } from 'react-router-dom';
 import AddMovieButton from '../components/AddMovieButton';
+import { useRoute } from '../../hooks/RouteContext';
 
 
 
 
 function Home() {
+
+
+    const { setToggleDisabled } = useRoute();
+
+
+    useEffect(() => {
+        setToggleDisabled(false); // toggle database button is active
+    }, [setToggleDisabled]);
+
+
+
+
+
 
     const { databaseMode, toggleDatabaseMode } = useDatabaseMode();
 

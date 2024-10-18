@@ -1,7 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useRoute } from '../../hooks/RouteContext';
 
 export default function Actor() {
+
+  const { setToggleDisabled } = useRoute();
+
+
+    useEffect(() => {
+      setToggleDisabled(false); // toggle database button is active
+    }, [setToggleDisabled]);
+
+
 
     const {id} = useParams();
 

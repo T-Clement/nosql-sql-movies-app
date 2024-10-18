@@ -7,11 +7,15 @@ import Actors from "./pages/Actors";
 import Actor from "./pages/Actor";
 import AddMovie from "./pages/AddMovie";
 
+
+import { useRoute } from "../hooks/RouteContext";
+
 import '@picocss/pico'
 
 
 export default function App() {
 
+  const {setToggleDisabled} = useRoute();
 
 
 
@@ -24,23 +28,22 @@ export default function App() {
         {
           index: true, 
           element: <Home />,
-
         },
         {
           path: "/movies/new",
-          element: <AddMovie />
+          element: <AddMovie />,
         },
         {
           path: "/movies/:id",
-          element: <Movie />
+          element: <Movie />,
         },
         {
           path: "/actors",
-          element: <Actors />
+          element: <Actors />,
         },
         {
           path: "/actors/:id",
-          element: <Actor />
+          element: <Actor />,
         },
         {
           path: "*",
