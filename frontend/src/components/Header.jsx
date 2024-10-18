@@ -15,7 +15,7 @@ const { databaseMode, toggleDatabaseMode } = useDatabaseMode();
 
 const location = useLocation();
 
-console.log(location.pathname);
+// console.log(location.pathname);
 
 
 const {isToggleDisabled} = useRoute();

@@ -71,7 +71,7 @@ export default function AddMovie() {
 
 
 
-    // Requêtes parallèles pour récupérer acteurs, genres, directeurs et studios
+     // parallels request to fetch actors, genres, directors and studios data
     const results = useQueries([
         {
             queryKey: ['actors', databaseMode],
@@ -115,16 +115,19 @@ export default function AddMovie() {
         },
     ]);
 
-    // Gestion des états de chargement et des erreurs
+    // handle states and errors
     const isLoading = results.some(result => result.isLoading);
     const hasError = results.some(result => result.error);
 
     if (isLoading) return <span aria-busy="true">Fetching data ...</span>;
     if (hasError) return 'An error has occurred.';
 
-    const [actors, genres, directors, studios] = results.map(result => result.data);
+    const [actors = [], genres = [], directors = [], studios = []] = results.map(result => result.data || []);
 
-    // Fonction de gestion de la soumission du formulaire
+
+
+
+    // functions
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -139,10 +142,10 @@ export default function AddMovie() {
         };
 
         console.log(formData);
-        // Tu peux maintenant envoyer formData à ton backend
+        // send formData to backend
     };
 
-    // Mapper les données récupérées pour les options des Select
+    // format objects to use it in select
     const actorOptions = actors.map(actor => ({
         value: actor.id,
         label: `${actor.firstname} ${actor.lastname}`,
@@ -176,22 +179,22 @@ export default function AddMovie() {
                     
                     <label>
                         Actors :
-                        <Select isMulti name="actors" options={options} onChange={setSelectedActors}/>
+                        <Select isMulti name="actors" options={actorOptions} onChange={setSelectedActors}/>
                     </label>
 
                     <label>
                         Genres :
-                        <Select isMulti name="genres" options={options} onChange={setSelectedGenres}/>
+                        <Select isMulti name="genres" options={genreOptions} onChange={setSelectedGenres}/>
                     </label>
 
                     <label>
                         Directors :
-                        <Select isMulti name="directors" options={options} onChange={setSelectedDirectors}/>
+                        <Select isMulti name="directors" options={directorOptions} onChange={setSelectedDirectors}/>
                     </label>
 
                     <label>
                         Studios :
-                        <Select isMulti name="studios" options={options} onChange={setSelectedStudios}/>
+                        <Select isMulti name="studios" options={studioOptions} onChange={setSelectedStudios}/>
                     </label>
 
                     <label>
@@ -222,186 +225,4 @@ export default function AddMovie() {
   )
 }
 
-
-
-
-// import React, { useState } from 'react';
-// import { useDatabaseMode } from '../../hooks/databaseModeContext';
-// import Select from 'react-select';
-// import { useQueries } from '@tanstack/react-query';
-
-// export default function AddMovie() {
-//     const { databaseMode } = useDatabaseMode();
-
-//     console.log(databaseMode);
-
-//     // Gérer les valeurs sélectionnées pour chaque champ
-//     const [selectedActors, setSelectedActors] = useState([]);
-//     const [selectedGenres, setSelectedGenres] = useState([]);
-//     const [selectedDirectors, setSelectedDirectors] = useState([]);
-//     const [selectedStudios, setSelectedStudios] = useState([]);
-
-//     // Requêtes parallèles pour récupérer acteurs, genres, directeurs et studios
-//     const results = useQueries([
-//         {
-//             queryKey: ['actors', databaseMode],
-//             queryFn: async () => {
-//                 const response = await fetch(`http://localhost:3000/api/${databaseMode}/actors`);
-//                 const data = await response.json();
-//                 return data.map(actor => ({
-//                     id: actor._id || actor.actor_id,
-//                     firstname: actor.firstname,
-//                     lastname: actor.lastname,
-//                 }));
-//             },
-//         },
-//         {
-//             queryKey: ['genres', databaseMode],
-//             queryFn: async () => {
-//                 const response = await fetch(`http://localhost:3000/api/${databaseMode}/genres`);
-//                 const data = await response.json();
-//                 return data.map(genre => ({ id: genre.id, name: genre.name }));
-//             },
-//         },
-//         {
-//             queryKey: ['directors', databaseMode],
-//             queryFn: async () => {
-//                 const response = await fetch(`http://localhost:3000/api/${databaseMode}/directors`);
-//                 const data = await response.json();
-//                 return data.map(director => ({
-//                     id: director._id || director.director_id,
-//                     firstname: director.firstname,
-//                     lastname: director.lastname,
-//                 }));
-//             },
-//         },
-//         {
-//             queryKey: ['studios', databaseMode],
-//             queryFn: async () => {
-//                 const response = await fetch(`http://localhost:3000/api/${databaseMode}/studios`);
-//                 const data = await response.json();
-//                 return data.map(studio => ({ id: studio.id, name: studio.name }));
-//             },
-//         },
-//     ]);
-
-//     // Gestion des états de chargement et des erreurs
-//     const isLoading = results.some(result => result.isLoading);
-//     const hasError = results.some(result => result.error);
-
-//     if (isLoading) return <span aria-busy="true">Fetching data ...</span>;
-//     if (hasError) return 'An error has occurred.';
-
-//     const [actors, genres, directors, studios] = results.map(result => result.data);
-
-//     // Fonction de gestion de la soumission du formulaire
-//     const handleSubmit = (e) => {
-//         e.preventDefault();
-
-//         const formData = {
-//             title: e.target.title.value,
-//             description: e.target.description.value,
-//             releaseDate: e.target.relase_date.value,
-//             actors: selectedActors.map(option => option.value),
-//             genres: selectedGenres.map(option => option.value),
-//             directors: selectedDirectors.map(option => option.value),
-//             studios: selectedStudios.map(option => option.value),
-//         };
-
-//         console.log(formData);
-//         // Tu peux maintenant envoyer formData à ton backend
-//     };
-
-//     // Mapper les données récupérées pour les options des Select
-//     const actorOptions = actors.map(actor => ({
-//         value: actor.id,
-//         label: `${actor.firstname} ${actor.lastname}`,
-//     }));
-
-//     const genreOptions = genres.map(genre => ({
-//         value: genre.id,
-//         label: genre.name,
-//     }));
-
-//     const directorOptions = directors.map(director => ({
-//         value: director.id,
-//         label: `${director.firstname} ${director.lastname}`,
-//     }));
-
-//     const studioOptions = studios.map(studio => ({
-//         value: studio.id,
-//         label: studio.name,
-//     }));
-
-//     return (
-//         <div>
-//             <h2>Current Database : <kbd>{databaseMode}</kbd></h2>
-
-//             <section>
-//                 <h3>Register a New Movie</h3>
-
-//                 <form onSubmit={handleSubmit}>
-//                     <fieldset>
-//                         <label>
-//                             Actors :
-//                             <Select
-//                                 isMulti
-//                                 name="actors"
-//                                 options={actorOptions}
-//                                 onChange={setSelectedActors}
-//                             />
-//                         </label>
-
-//                         <label>
-//                             Genres :
-//                             <Select
-//                                 isMulti
-//                                 name="genres"
-//                                 options={genreOptions}
-//                                 onChange={setSelectedGenres}
-//                             />
-//                         </label>
-
-//                         <label>
-//                             Directors :
-//                             <Select
-//                                 isMulti
-//                                 name="directors"
-//                                 options={directorOptions}
-//                                 onChange={setSelectedDirectors}
-//                             />
-//                         </label>
-
-//                         <label>
-//                             Studios :
-//                             <Select
-//                                 isMulti
-//                                 name="studios"
-//                                 options={studioOptions}
-//                                 onChange={setSelectedStudios}
-//                             />
-//                         </label>
-
-//                         <label>
-//                             Movie Title :
-//                             <input type="text" name="title" />
-//                         </label>
-
-//                         <label>
-//                             Movie Resume :
-//                             <input type="text" name="description" />
-//                         </label>
-
-//                         <label>
-//                             Release Date :
-//                             <input type="date" name="relase_date" />
-//                         </label>
-//                     </fieldset>
-
-//                     <input type="submit" value="Register" />
-//                 </form>
-//             </section>
-//         </div>
-//     );
-// }
 

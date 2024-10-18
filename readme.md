@@ -23,3 +23,4 @@ DONE :
     - add Router
     - add view show for one movie
     - add view form add movie 
+    - add context to handle disabled state of toggle database button (disabled it on specific endpoints)
