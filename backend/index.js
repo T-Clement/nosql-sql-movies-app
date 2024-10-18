@@ -252,7 +252,9 @@ app.post("/api/mongodb/movies/store", async (req, res, next) => {
 })
 
 
-
+app.get('*', function(req, res){
+  res.status(404).json({message: "You're lost !!"});
+});
 
 
 app.listen(port, () => {

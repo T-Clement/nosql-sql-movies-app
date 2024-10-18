@@ -13,7 +13,7 @@ class ActorsSQL {
 
 
     static async getActors() {
-        const query = "SELECT * FROM actors";
+        const query = "SELECT actor_id, firstname, lastname FROM actors";
         const values = {};
 
         return new Promise((resolve, reject) => {

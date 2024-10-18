@@ -45,7 +45,8 @@ class ActorsMongo {
 
 
     async getActors() {
-        const actors = await this.collection.find().toArray();
+        const actors = await this.collection.find({}, {projection: {firstname: 1, lastname: 1}}).toArray();
+        console.log(actors);
         return actors;
     }
 
