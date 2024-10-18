@@ -18,7 +18,7 @@ export default function AddMovie() {
 
 
 
-    const {databaseMode} = useDatabaseMode()
+    const { databaseMode } = useDatabaseMode()
 
     console.log(databaseMode)
 
@@ -34,86 +34,55 @@ export default function AddMovie() {
 
 
 
+    // parallels request to fetch actors, genres, directors and studios data
+    const results = useQueries({
+        queries: [
 
-
-
-
-    // // const usersQuery = useQuery({ queryKey: ['actors'], queryFn:  })
-
-    // // const { data: actors, isLoading, error } = useQuery({
-    // //     queryKey: ['actors', databaseMode], // use databasemode as dependance of queryKey, if mode change query is refetch
-    // //     queryFn: async () => {
-    // //         const response = await fetch(`http://localhost:3000/api/${databaseMode}/actors`);
-    // //         // console.log(response.json());
-    // //         const responseJson = await response.json();
-
-    // //         const formattedActors = responseJson.map(actor => ({ id: actor._id || actor.actor_id, firstname: actor.firstname, lastname: actor.lastname}));
-    // //         return formattedActors;
-    // //     },
-    // // });
-    // // console.log(actors)
-
-    // if (isLoading) return <span aria-busy="true">Fetching data ...</span>;
-
-    // if (error) return 'An error has occurred: ' + error.message
-
-    // const options = actors.map(actor => ({value: actor.id, label: `${actor.firstname} ${actor.lastname}`}));
-
-
-
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     // console.log(e.target.values);
-    //     console.log(selectedActors);
-    // }
-
-
-
-
-     // parallels request to fetch actors, genres, directors and studios data
-    const results = useQueries([
-        {
-            queryKey: ['actors', databaseMode],
-            queryFn: async () => {
-                const response = await fetch(`http://localhost:3000/api/${databaseMode}/actors`);
-                const data = await response.json();
-                return data.map(actor => ({
-                    id: actor._id || actor.actor_id,
-                    firstname: actor.firstname,
-                    lastname: actor.lastname,
-                }));
+            {
+                queryKey: ['actors', databaseMode],
+                queryFn: async () => {
+                    const response = await fetch(`http://localhost:3000/api/${databaseMode}/actors`);
+                    const data = await response.json();
+                    return data.map(actor => ({
+                        id: actor._id || actor.actor_id,
+                        firstname: actor.firstname,
+                        lastname: actor.lastname,
+                    }));
+                },
             },
-        },
-        {
-            queryKey: ['genres', databaseMode],
-            queryFn: async () => {
-                const response = await fetch(`http://localhost:3000/api/${databaseMode}/genres`);
-                const data = await response.json();
-                return data.map(genre => ({ id: genre.id, name: genre.name }));
+            {
+                queryKey: ['genres', databaseMode],
+                queryFn: async () => {
+                    const response = await fetch(`http://localhost:3000/api/${databaseMode}/genres`);
+                    const data = await response.json();
+                    return data.map(genre => ({ id: genre.id, name: genre.name }));
+                },
             },
-        },
-        {
-            queryKey: ['directors', databaseMode],
-            queryFn: async () => {
-                const response = await fetch(`http://localhost:3000/api/${databaseMode}/directors`);
-                const data = await response.json();
-                return data.map(director => ({
-                    id: director._id || director.director_id,
-                    firstname: director.firstname,
-                    lastname: director.lastname,
-                }));
+            {
+                queryKey: ['directors', databaseMode],
+                queryFn: async () => {
+                    const response = await fetch(`http://localhost:3000/api/${databaseMode}/directors`);
+                    const data = await response.json();
+                    return data.map(director => ({
+                        id: director._id || director.director_id,
+                        firstname: director.firstname,
+                        lastname: director.lastname,
+                    }));
+                },
             },
-        },
-        {
-            queryKey: ['studios', databaseMode],
-            queryFn: async () => {
-                const response = await fetch(`http://localhost:3000/api/${databaseMode}/studios`);
-                const data = await response.json();
-                return data.map(studio => ({ id: studio.id, name: studio.name }));
+            {
+                queryKey: ['studios', databaseMode],
+                queryFn: async () => {
+                    const response = await fetch(`http://localhost:3000/api/${databaseMode}/studios`);
+                    const data = await response.json();
+                    return data.map(studio => ({ id: studio.id, name: studio.name }));
+                },
             },
-        },
-    ]);
+        ]
+    });
+
+
+    console.warn('results :', results);
 
     // handle states and errors
     const isLoading = results.some(result => result.isLoading);
@@ -166,63 +135,63 @@ export default function AddMovie() {
         label: studio.name,
     }));
 
-  return (
-    <div>
-        <h2>Current Database : <kbd>{databaseMode}</kbd></h2>
+    return (
+        <div>
+            <h2>Current Database : <kbd>{databaseMode}</kbd></h2>
 
-        <section>
+            <section>
 
-            <h3>Register a New Movie</h3>
+                <h3>Register a New Movie</h3>
 
-            <form onSubmit={handleSubmit}>
-                <fieldset>
-                    
-                    <label>
-                        Actors :
-                        <Select isMulti name="actors" options={actorOptions} onChange={setSelectedActors}/>
-                    </label>
+                <form onSubmit={handleSubmit}>
+                    <fieldset>
 
-                    <label>
-                        Genres :
-                        <Select isMulti name="genres" options={genreOptions} onChange={setSelectedGenres}/>
-                    </label>
+                        <label>
+                            Actors :
+                            <Select isMulti name="actors" options={actorOptions} onChange={setSelectedActors} />
+                        </label>
 
-                    <label>
-                        Directors :
-                        <Select isMulti name="directors" options={directorOptions} onChange={setSelectedDirectors}/>
-                    </label>
+                        <label>
+                            Genres :
+                            <Select isMulti name="genres" options={genreOptions} onChange={setSelectedGenres} />
+                        </label>
 
-                    <label>
-                        Studios :
-                        <Select isMulti name="studios" options={studioOptions} onChange={setSelectedStudios}/>
-                    </label>
+                        <label>
+                            Directors :
+                            <Select isMulti name="directors" options={directorOptions} onChange={setSelectedDirectors} />
+                        </label>
 
-                    <label>
-                        Movie Title :
-                        <input type="text" name="title" onChange={setMovieTitle} value={movieTitle}/>
-                    </label>
-                    
-                    <label>
-                        Movie Resume :
-                        <input type="text" name="description" onChange={setMovieResume} value={movieResume}/>
-                    </label>
+                        <label>
+                            Studios :
+                            <Select isMulti name="studios" options={studioOptions} onChange={setSelectedStudios} />
+                        </label>
 
-                    <label>
-                        Release Date :
-                        <input type="date" name="relase_date" onChange={setMovieDate} value={movieDate}/>
-                    </label>
+                        <label>
+                            Movie Title :
+                            <input type="text" name="title" onChange={(e) => setMovieTitle(e.target.value)} value={movieTitle} />
+                        </label>
 
-                </fieldset>
+                        <label>
+                            Movie Resume :
+                            <input type="text" name="description" onChange={(e) => setMovieResume(e.target.value)} value={movieResume} />
+                        </label>
+
+                        <label>
+                            Release Date :
+                            <input type="date" name="relase_date" onChange={(e) => setMovieDate(e.target.value)} value={movieDate} />
+                        </label>
+
+                    </fieldset>
 
 
-                <input type='submit' value="Register" />
-            </form>
+                    <input type='submit' value="Register" />
+                </form>
 
-        </section>
-        
-        
-    </div>
-  )
+            </section>
+
+
+        </div>
+    )
 }
 
 

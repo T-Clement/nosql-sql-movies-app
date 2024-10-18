@@ -63,7 +63,8 @@ const actorsNoSqlRoutes = require('./routes/actorsNoSQL');
 app.use('/api/sql/movies/', moviesSqlRoutes);
 app.use('/api/sql/actors/', actorsSqlRoutes);
 app.use('/api/sql/genres/', genresSqlRoutes);
-
+app.use('/api/sql/studios/', studiosSqlRoutes);
+app.use('/api/sql/directors/', directorsSqlRoutes);
 
 // MONGODB
 app.use('/api/mongodb/movies', moviesNoSqlRoutes);
