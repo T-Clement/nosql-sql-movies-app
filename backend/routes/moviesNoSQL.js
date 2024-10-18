@@ -9,6 +9,6 @@ const MoviesControllerNoSQL = require("../controllers/MoviesMongoController");
 router.get('/', MoviesControllerNoSQL.index);
 router.get('/:id', MoviesControllerNoSQL.show);
 
-router.post('/store', MoviesControllerNoSQL.store);
+// router.post('/store', MoviesControllerNoSQL.store);
 
 module.exports = router;
