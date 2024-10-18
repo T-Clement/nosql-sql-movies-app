@@ -1,22 +1,23 @@
 const db = require('../config/sqlite');
 
 
-class GenresSQL {
-    constructor (genre_id, name) {
-        this.genre_id = genre_id;
-        this.name = name;
+class DirectorsSQL {
+    constructor (director_id, firstname, lastname) {
+        this.director_id = director_id;
+        this.firstname = firstname;
+        this.lastname = lastname;
     }
 
 
 
-    static async getGenres() {
-        const query = "SELECT * FROM genres";
+    static async getDirectors() {
+        const query = "SELECT * FROM directors";
         const values = {};
 
         return new Promise((resolve, reject) => {
             db.all(query, values, (err, rows) => {
                 if(err) {
-                    console.error("Error finding genres : " + err.message);
+                    console.error("Error finding directors : " + err.message);
                     reject(err);
                     // console.log(rows);
                     resolve(null);
@@ -31,4 +32,4 @@ class GenresSQL {
 
 }
 
-module.exports = GenresSQL
+module.exports = DirectorsSQL
