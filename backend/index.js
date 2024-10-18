@@ -252,13 +252,29 @@ app.post("/api/mongodb/movies/store", async (req, res, next) => {
 })
 
 
-app.put("/api/mongodb/actors/:id/update", async (req, res, next) => {
-  const {actorId: id, lastname, firstname, bio: biographie} = req.body;
+app.put("/api/mongodb/actors/:id/update", async (req, res, next) => { // put replace a complete ressource
+  const {id: actorId, lastname, firstname, biographie: bio} = req.body;
 
   console.log(req.body);
-  
 
-  return res.status(200).json({message: "data received :"});
+  const query = { _id: ObjectId.createFromHexString(actorId)};
+  const update= {
+    $set : {
+      firstname: firstname,
+      lastname: lastname,
+      bio: bio
+    }
+  };
+  const options = {};
+
+  // update actors collection for a specific actor id
+  const result = mongoClient.collection("actors").updateOne(query, update, options);
+
+
+
+
+
+  return res.status(200).json({message: "data received :", result: result});
 
 })
 
