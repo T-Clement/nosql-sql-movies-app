@@ -268,7 +268,7 @@ app.put("/api/mongodb/actors/:id/update", async (req, res, next) => { // put rep
   const options = {};
 
   // update actors collection for a specific actor id
-  const result = mongoClient.collection("actors").updateOne(query, update, options);
+  const result = await mongoClient.collection("actors").updateOne(query, update, options);
 
 
 

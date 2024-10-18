@@ -10,7 +10,7 @@ export default function Actor() {
 
   const { databaseMode } = useDatabaseMode();
 
-  const {navigate} = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setToggleDisabled(true); // toggle database button is active

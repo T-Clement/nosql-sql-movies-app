@@ -23,7 +23,7 @@ export default function EditActor() {
 
     const { databaseMode } = useDatabaseMode();
     const { id } = useParams();
-    const { navigate } = useNavigate();
+    const navigate = useNavigate();
 
     const { data: actor, isLoading, error } = useQuery({
         queryKey: ['actor', databaseMode], // use databasemode as dependance of queryKey, if mode change query is refetch
