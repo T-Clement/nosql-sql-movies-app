@@ -12,6 +12,7 @@ import { useRoute } from "../hooks/RouteContext";
 
 import '@picocss/pico'
 import EditActor from "./pages/EditActor";
+import Genres from "./pages/Genres";
 
 
 export default function App() {
@@ -49,6 +50,10 @@ export default function App() {
         {
           path: "/actors/:id/edit",
           element: <EditActor />
+        },
+        {
+          path: "/genres",
+          element: <Genres />
         },
         {
           path: "*",

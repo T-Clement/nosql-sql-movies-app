@@ -46,7 +46,7 @@ export default function Actor() {
         <header>
           <hgroup>
             <h3>{actor.firstname} {actor.lastname}</h3>
-            <i>{actor.bio}</i>
+            <i>{actor.bio || actor.biographie}</i>
           </hgroup>
         </header>
         {/* <img /> */}

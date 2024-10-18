@@ -14,7 +14,7 @@ TODO :
     - ...
 
 - FRONT :
-    - ...
+    - fix grid in desktop
 
 DONE : 
 - BACKEND :
@@ -30,3 +30,4 @@ DONE :
     - add context to handle disabled state of toggle database button (disabled it on specific endpoints)
     - add view show actor
     - add view for update actor name
+    - dark / light toggle theme
