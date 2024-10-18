@@ -158,7 +158,7 @@ app.post("/api/mongodb/movies/store", async (req, res, next) => {
     directorsIds = directors ? directors.map(id => ObjectId.createFromHexString(id)) : [];
     studioIds = studios ? studios.map(id => ObjectId.createFromHexString(id)) : [];
 
-  } catch(error) {
+  } catch (error) {
     return res.status(500).json({
       message: "Ids needs to be in ObjectId format for MongoDB"
     })
@@ -166,13 +166,13 @@ app.post("/api/mongodb/movies/store", async (req, res, next) => {
 
   // get data of actors
   let actorsData = [];
-  if(actorsIds.length > 0) {
+  if (actorsIds.length > 0) {
     actorsData = await mongoClient.collection('actors')
-      .find({_id: { $in: actorsIds }})
+      .find({ _id: { $in: actorsIds } })
       .project({ firstname: 1, lastname: 1 })
       .toArray();
 
-    if(actorsData.length !== actorsIds.length) {
+    if (actorsData.length !== actorsIds.length) {
       const foundActorsIds = actorsData.map(actor => actor._id.toString());
       const missingActorsIds = actors.filter(id => !foundActorsIds.includes(id));
       return res.status(404).json({
@@ -221,8 +221,8 @@ app.post("/api/mongodb/movies/store", async (req, res, next) => {
 
   // genres
   let genresData = [];
-  if(genres && genres.length > 0) {
-    genresData = genres.map(genreName => ({name: genreName}));
+  if (genres && genres.length > 0) {
+    genresData = genres.map(genreName => ({ name: genreName }));
   }
 
 
@@ -230,7 +230,7 @@ app.post("/api/mongodb/movies/store", async (req, res, next) => {
   // create newMovie Object
 
   const newMovie = {
-    title, 
+    title,
     description,
     year: releaseDate,
     actors: actorsData,
@@ -253,13 +253,13 @@ app.post("/api/mongodb/movies/store", async (req, res, next) => {
 
 
 app.put("/api/mongodb/actors/:id/update", async (req, res, next) => { // put replace a complete ressource
-  const {id: actorId, lastname, firstname, biographie: bio} = req.body;
+  const { id: actorId, lastname, firstname, biographie: bio } = req.body;
 
   console.log(req.body);
 
-  const query = { _id: ObjectId.createFromHexString(actorId)};
-  const update= {
-    $set : {
+  const query = { _id: ObjectId.createFromHexString(actorId) };
+  const update = {
+    $set: {
       firstname: firstname,
       lastname: lastname,
       bio: bio
@@ -272,16 +272,34 @@ app.put("/api/mongodb/actors/:id/update", async (req, res, next) => { // put rep
 
 
 
+  // documentation links on this query : 
+  // https://www.mongodb.com/docs/manual/reference/method/db.collection.updateOne/#update-specific-elements-of-an-array-of-documents
+  // https://www.mongodb.com/docs/manual/reference/operator/update/positional-filtered/#mongodb-update-up.---identifier--
+
+  const filterUpdateQuery = {
+    "actors._id": ObjectId.createFromHexString(actorId), 
+  };
+
+  const valuesUpdateQuery = {
+    $set : { 
+      "actors.$[elem].firstname": firstname,
+      "actors.$[elem].lastname": lastname 
+    }
+  };
+  const optionsUpdateQuery = {
+    arrayFilters: [{"elem._id" :  ObjectId.createFromHexString(actorId)}]
+  };
+  const resultMutlipleUpdates = await mongoClient.collection("movies").updateMany(filterUpdateQuery, valuesUpdateQuery, optionsUpdateQuery);
 
 
-  return res.status(200).json({message: "data received :", result: result});
+  return res.status(200).json({ message: "data received :", actorQuery: result, moviesQuery: resultMutlipleUpdates});
 
 })
 
 
 
-app.get('*', function(req, res){
-  res.status(404).json({message: "You're lost !!"});
+app.get('*', function (req, res) {
+  res.status(404).json({ message: "You're lost !!" });
 });
 
 

@@ -71,8 +71,8 @@ export default function Actor() {
         </footer>
       </article>
 
-      <button>
-        <NavLink to={`/actors/${id}/edit`} >
+      <button className='secondary'>
+        <NavLink className='contrast' to={`/actors/${id}/edit`} >
         Edit
         </NavLink>
       </button>

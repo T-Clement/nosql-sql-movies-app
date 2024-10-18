@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRoute } from '../../hooks/RouteContext';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Mutation, useMutation, useQuery } from '@tanstack/react-query';
+import { Mutation, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDatabaseMode } from '../../hooks/databaseModeContext';
 import axios from 'axios';
 
@@ -24,6 +24,8 @@ export default function EditActor() {
     const { databaseMode } = useDatabaseMode();
     const { id } = useParams();
     const navigate = useNavigate();
+
+    const queryClient = useQueryClient();
 
     const { data: actor, isLoading, error } = useQuery({
         queryKey: ['actor', databaseMode], // use databasemode as dependance of queryKey, if mode change query is refetch
@@ -60,6 +62,7 @@ export default function EditActor() {
             return response.data;
         },
         onSuccess: () => {
+            // queryClient.invalidateQueries('actor'); // invalidate query to use fresh data
             navigate(`/actors/${id}`);
         }
 
@@ -126,7 +129,7 @@ export default function EditActor() {
                     </label>
                 </fieldset>
 
-                <button type='submit' disabled={mutation.isLoading}>
+                <button className="secondary" type='submit' disabled={mutation.isLoading}>
                     {mutation.isLoading ? <span aria-busy="true">Updating...</span> : 'Update'}
                 </button>
 
