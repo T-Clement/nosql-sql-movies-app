@@ -2,6 +2,7 @@ const { MongoClient } = require('mongodb');
 const MoviesMongo = require('../models/MoviesMongo');
 const {ActorsMongo, Actor} = require('../models/ActorsMongo');
 const {DirectorsMongo, Director} = require('../models/DirectorsMongo');
+const StudiosMongo = require('../models/StudiosMongo');
 
 class MongoBot {
   constructor() {
@@ -20,6 +21,7 @@ class MongoBot {
         this.ActorsMongo = new ActorsMongo(this.db);
         this.DirectorsMongo = new DirectorsMongo(this.db);
         this.MoviesMongo = new MoviesMongo(this.db);
+        this.StudiosMongo = new StudiosMongo(this.db);
 
 
         await this.setupDatabase();
@@ -34,6 +36,9 @@ class MongoBot {
   async setupDatabase() {
     await this.insertActors();
     await this.insertDirectors();
+    await this.insertStudios();
+    
+    // insert movies at the end
     await this.insertMovies();
   }
 
@@ -91,6 +96,27 @@ class MongoBot {
   }
 
 
+  async insertStudios() {
+    const studiosCollection = this.db.collection("studios");
+
+    if(await studiosCollection.countDocuments() === 0) {
+      const studios = [
+        { name: "New Line Cinema" },
+        { name: "Warner Bros." },
+        { name: "MGM" },
+        { name: "Universal Pictures" },
+        { name: "Walt Disney Pictures" },
+        { name: "Picturehouse" },
+        { name: "20th Century Fox" },
+        { name: "Paramount Pictures" }
+      ];
+
+      await studiosCollection.insertMany(studios);
+      console.log('Studios inserted');
+
+    }
+  }
+
 
 
   async insertMovies() {
@@ -112,7 +138,7 @@ class MongoBot {
           ],
           directors: [await this.DirectorsMongo.getDirectorFromName('Peter', 'Jackson')],
           genres: [{ name: "Fantasy" }, { name: "Adventure" }],
-          studios: [{ studio_id: 1, name: "New Line Cinema" }]
+          studios: [await this.StudiosMongo.getStudioFromName('New Line Cinema')]
         },
         {
           title: "The Lord of the Rings: The Two Towers",
@@ -129,10 +155,7 @@ class MongoBot {
           ],
           directors: [ await this.DirectorsMongo.getDirectorFromName('Peter', 'Jackson') ],
           "genres": [{"genre_id": 1, "name": "Fantasy"}, {"genre_id": 2,"name": "Adventure"}],
-          "studios": [{
-            "studio_id": 1,
-            "name": "New Line Cinema"
-          }]
+          "studios": [await this.StudiosMongo.getStudioFromName('New Line Cinema')]
         },
         {
           title: "The Lord of the Rings: The Return of the King",
@@ -151,7 +174,7 @@ class MongoBot {
 
           ],
           genres: [{"genre_id": 1, "name": "Fantasy"}, {"genre_id": 2, "name": "Adventure"}],
-          studios: [{"studio_id": 1, "name": "New Line Cinema"}]
+          studios: [await this.StudiosMongo.getStudioFromName('New Line Cinema')]
         },
         {
           title: "Harry Potter and the Sorcerer's Stone",
@@ -168,7 +191,7 @@ class MongoBot {
             await this.DirectorsMongo.getDirectorFromName("Chris", "Columbus")
           ],
           genres: [{"genre_id": 1,"name": "Fantasy"},{"genre_id": 2,"name": "Adventure"}],
-          studios: [{"studio_id": 2,"name": "Warner Bros."}]
+          studios: [await this.StudiosMongo.getStudioFromName('Warner Bros.')]
         },
         {
           title: "Harry Potter and the Chamber of Secrets",
@@ -183,7 +206,7 @@ class MongoBot {
           ],
           directors: [await this.DirectorsMongo.getDirectorFromName("Chris", "Columbus")],
           genres: [{"genre_id": 1,"name": "Fantasy"}, {"genre_id": 2,"name": "Adventure"}],
-          studios: [{"studio_id": 2, "name": "Warner Bros."}]
+          studios: [await this.StudiosMongo.getStudioFromName('Warner Bros.')]
         },
         {
           title: "The Hobbit: An Unexpected Journey",
@@ -198,7 +221,7 @@ class MongoBot {
           ],
           directors: [await this.DirectorsMongo.getDirectorFromName("Alfonso", "Cuarón")],
           genres: [{"genre_id": 1, "name": "Fantasy"}],
-          studios: [{"studio_id": 3,"name": "MGM"}]
+          studios: [await this.StudiosMongo.getStudioFromName('MGM')]
         },
         {
           title: "The Chronicles of Narnia: The Lion, the Witch and the Wardrobe",
@@ -213,7 +236,7 @@ class MongoBot {
             await this.DirectorsMongo.getDirectorFromName("Mike", "Newell"),
           ],
           genres: [{"genre_id": 1, "name": "Fantasy"}],
-          studios: [{"studio_id": 5, "name": "Walt Disney Pictures"}]
+          studios: [await this.StudiosMongo.getStudioFromName('Walt Disney Pictures')]
         },
         {
           title: "Fantastic Beasts and Where to Find Them",
@@ -229,7 +252,7 @@ class MongoBot {
             await this.DirectorsMongo.getDirectorFromName("Andy", "Serkis"),
           ],
           genres: [{"genre_id": 1,"name": "Fantasy"}],
-          studios: [{"studio_id": 2, "name": "Warner Bros."}]
+          studios: [await this.StudiosMongo.getStudioFromName('Warner Bros.')]
         },
         {
           title: "Pan's Labyrinth",
@@ -240,7 +263,7 @@ class MongoBot {
           actors: [],
           directors: [ await this.DirectorsMongo.getDirectorFromName("Guillermo", "del Toro"), ],
           genres: [{"genre_id": 1, "name": "Fantasy"}],
-          studios: [{"studio_id": 6, "name": "Picturehouse"}]
+          studios: [await this.StudiosMongo.getStudioFromName("Picturehouse")]
         },
         {
           title: "Stardust",
@@ -253,7 +276,7 @@ class MongoBot {
             await this.DirectorsMongo.getDirectorFromName("Andy", "Serkis"),
           ],  
           genres: [{"genre_id": 1, "name": "Fantasy"}],
-          studios: [{"studio_id": 8, "name": "Paramount Pictures"}]
+          studios: [await this.StudiosMongo.getStudioFromName('Paramount Pictures')]
         }
       
       ];
