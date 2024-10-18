@@ -20,7 +20,8 @@ class MongoBot {
         this.ActorsMongo = new ActorsMongo(this.db);
         this.DirectorsMongo = new DirectorsMongo(this.db);
         this.MoviesMongo = new MoviesMongo(this.db);
-        
+
+
         await this.setupDatabase();
         return this.db
 
@@ -111,7 +112,7 @@ class MongoBot {
           ],
           directors: [await this.DirectorsMongo.getDirectorFromName('Peter', 'Jackson')],
           genres: [{ name: "Fantasy" }, { name: "Adventure" }],
-          studios: [{ name: "New Line Cinema" }]
+          studios: [{ studio_id: 1, name: "New Line Cinema" }]
         },
         {
           title: "The Lord of the Rings: The Two Towers",

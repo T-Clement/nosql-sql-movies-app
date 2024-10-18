@@ -82,7 +82,7 @@ export default function AddMovie() {
     });
 
 
-    console.warn('results :', results);
+    // console.warn('results :', results);
 
     // handle states and errors
     const isLoading = results.some(result => result.isLoading);
