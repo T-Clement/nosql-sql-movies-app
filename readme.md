@@ -1,6 +1,9 @@
+!!!
+#CORS SET TO 127.0.0.1:5173
+!!!
+
 TODO :
 - BACKEND :
-    - use REDIS to cache genre of movies
     - update an actor name in MongoDB and update his name in all movies related to him
     - add validator
     - add movie post store route
@@ -14,6 +17,7 @@ DONE :
 - BACKEND :
     - movies index SQL & NoSQL
     - movies show SQL & NoSQL
+    - use REDIS to cache genre of movies
 
 - FRONTEND :    
     - add Router
