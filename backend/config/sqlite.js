@@ -108,34 +108,30 @@ let sql_create_genres = `CREATE TABLE IF NOT EXISTS genres (
 
 
 let sql_create_actors_movies = `CREATE TABLE IF NOT EXISTS actors_movies (
-  actor_id INTEGER,
-  movie_id INTEGER,
-  FOREIGN KEY(actor_id) REFERENCES actors(actor_id),
-  FOREIGN KEY(movie_id) REFERENCES movies(movie_id)
+  movie_id INTEGER NOT NULL REFERENCES movies(movie_id) ON DELETE CASCADE,
+  actor_id INTEGER NOT NULL REFERENCES actors(actor_id) ON DELETE CASCADE,
+  PRIMARY KEY (actor_id, movie_id)
 );`;
 
 
 let sql_create_directors_movies = `CREATE TABLE IF NOT EXISTS directors_movies (
-  director_id INTEGER,
-  movie_id INTEGER,
-  FOREIGN KEY(director_id) REFERENCES directors(director_id),
-  FOREIGN KEY(movie_id) REFERENCES movies(movie_id)
+  movie_id INTEGER NOT NULL REFERENCES movies(movie_id) ON DELETE CASCADE,
+  director_id INTEGER NOT NULL REFERENCES directors(director_id) ON DELETE CASCADE,
+  PRIMARY KEY (director_id, movie_id)
 );`;
 
 
 let sql_create_genres_movies = `CREATE TABLE IF NOT EXISTS genres_movies (
-  genre_id INTEGER,
-  movie_id INTEGER,
-  FOREIGN KEY(genre_id) REFERENCES genres(genre_id),
-  FOREIGN KEY(movie_id) REFERENCES movies(movie_id)
+  movie_id INTEGER NOT NULL REFERENCES movies(movie_id) ON DELETE CASCADE,
+  genre_id INTEGER NOT NULL REFERENCES genres(genre_id) ON DELETE CASCADE,
+  PRIMARY KEY(genre_id, movie_id)
 );`;
 
 
 let sql_create_movies_studios = `CREATE TABLE IF NOT EXISTS movies_studios (
-  movie_id INTEGER,
-  studio_id INTEGER,
-  FOREIGN KEY(movie_id) REFERENCES movies(movie_id),
-  FOREIGN KEY(studio_id) REFERENCES studios(studio_id)
+  movie_id INTEGER NOT NULL REFERENCES movies(movie_id) ON DELETE CASCADE,
+  studio_id INTEGER NOT NULL REFERENCES studios(studio_id) ON DELETE CASCADE,
+  PRIMARY KEY(studio_id, movie_id)
 );`;
 
 

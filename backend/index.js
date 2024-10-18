@@ -255,7 +255,7 @@ app.post("/api/mongodb/movies/store", async (req, res, next) => {
 app.put("/api/mongodb/actors/:id/update", async (req, res, next) => { // put replace a complete ressource
   const { id: actorId, lastname, firstname, biographie: bio } = req.body;
 
-  console.log(req.body);
+  // console.log(req.body);
 
   const query = { _id: ObjectId.createFromHexString(actorId) };
   const update = {

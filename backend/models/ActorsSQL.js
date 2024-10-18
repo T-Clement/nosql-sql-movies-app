@@ -99,6 +99,25 @@ class ActorsSQL {
         })
     }
 
+
+    static async deleteActor(actorId) {
+        const query = 'DELETE FROM actors WHERE actor_id = $id';
+        const values = { $id: actorId };
+
+        return new Promise((resolve, reject) => {
+            db.run(query, values, function(err) { // not arrow function to get access to this and this.changes
+                if (err) {
+                    console.error("Error deleting actor by id: " + err.message);
+                    return reject(err); // reject promise if error
+                } else {
+                    resolve({deletedActorId: actorId, changes: this.changes});
+                }
+            });
+        });
+    }
+
+
+
 }
 
 module.exports = ActorsSQL;

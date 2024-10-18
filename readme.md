@@ -16,13 +16,13 @@ something in mongodb mode after a refreshed / reload page
 
 TODO :
 - BACKEND :
-    - update an actor name in MongoDB and update his name in all movies related to him
     - add validator
     - cascade on delete for SQL and Mongo(unset)
     - ...
 
 - FRONT :
     - fix grid in desktop
+    - add movies played by actor in actor view
 
 DONE : 
 - BACKEND :
@@ -30,6 +30,7 @@ DONE :
     - movies show SQL & NoSQL
     - use REDIS to cache genre of movies
     - add movie post store route
+    - update an actor name in MongoDB and update his name in all movies related to him
 
 - FRONTEND :    
     - add Router

@@ -14,6 +14,7 @@ router.put('/:id/update', ActorsControllerSQL.update);
 // store pour enregistrer,
 // udpate / modify
 // destroy 
+router.delete('/:id/delete', ActorsControllerSQL.delete);
 
 
 module.exports = router;
