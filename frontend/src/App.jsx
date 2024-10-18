@@ -7,7 +7,7 @@ import Actors from "./pages/Actors";
 import Actor from "./pages/Actor";
 import AddMovie from "./pages/AddMovie";
 
-
+import '@picocss/pico'
 
 
 export default function App() {
