@@ -4,9 +4,9 @@
 
 > **Warning:**
 >
-> - CORS is set to `127.0.0.1:5173, so request needs to come from a frontend who is 127.0.0.1:5173`.
+> - CORS is set to `127.0.0.1:5173`, so requests need to come from a frontend running on `127.0.0.1:5173`.
 > - A Redis instance must be running on port `6379`.
-> - You may do not want to see the devtool of React-Query, is so you can comment the component <ReactQueryDevtools /> in main.jsx.
+> - You may not want to see the React Query Devtools; if so, you can comment out the `<ReactQueryDevtools />` component in `main.jsx`.
 
 ## Application Launch
 
