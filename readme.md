@@ -1,5 +1,3 @@
----
-
 # Project: Setup and Important Information
 
 > **Warning:**
