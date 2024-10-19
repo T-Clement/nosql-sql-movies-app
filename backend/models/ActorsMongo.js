@@ -43,6 +43,10 @@ class ActorsMongo {
         return actor;
     }
 
+    async deleteActor(actor_id) {
+        return await this.collection.findOneAndDelete({_id: actor_id});
+    }
+
 
     async getActors() {
         const actors = await this.collection.find({}, {projection: {firstname: 1, lastname: 1}}).toArray();

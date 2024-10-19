@@ -14,6 +14,6 @@ router.get('/:id', ActorsMongoController.show);
 // store pour enregistrer,
 // udpate / modify
 // destroy 
-
+router.delete('/:id/delete', ActorsMongoController.delete);
 
 module.exports = router;
