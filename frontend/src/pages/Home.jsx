@@ -34,7 +34,7 @@ function Home() {
     });
 
 
-    console.log(movies)
+    // console.log(movies)
 
     if (isLoading) return 'Loading...';
 

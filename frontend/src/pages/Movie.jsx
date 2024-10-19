@@ -16,7 +16,7 @@ export default function Movie() {
 
     const { databaseMode } = useDatabaseMode();
 
-    console.log(databaseMode);
+    // console.log(databaseMode);
     const { id } = useParams();
 
 
@@ -33,7 +33,7 @@ export default function Movie() {
     });
 
 
-    console.log(movie);
+    // console.log(movie);
 
 
     if (isLoading) return <span aria-busy="true">Fetching data ...</span>;

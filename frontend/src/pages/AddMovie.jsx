@@ -182,7 +182,7 @@ export default function AddMovie() {
             <section>
 
                 <h3>Register a New Movie</h3>
-
+                {isSuccess && <div><p>Film successfully added !</p><p><Link to={`/movies/${mutation.data.movie._id || mutation.data.movie.movie_id}`}>Go to new movie</Link></p></div>}
                 <form onSubmit={handleSubmit}>
                     <fieldset>
 
@@ -228,7 +228,7 @@ export default function AddMovie() {
                 </form>
 
                 {isSubmitting && <p>Sending in progress...</p>}
-                {isSuccess && <div><p>Film successfully added !</p><p><Link to={`/movies/${mutation.data.movie._id || mutation.data.movie.movie_id}`}>Go to new movie</Link></p></div>}
+                
                 {isError && <p>An error happened during film adding process.</p>}
 
 

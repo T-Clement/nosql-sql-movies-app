@@ -8,7 +8,7 @@ router.get('/', ActorsMongoController.index);
 router.get('/:id', ActorsMongoController.show);
 
 // router.post('/store', ActorsMongoController.store);
-
+router.put('/:id/update', ActorsMongoController.update);
 
 
 // store pour enregistrer,

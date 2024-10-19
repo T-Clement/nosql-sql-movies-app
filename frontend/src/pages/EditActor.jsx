@@ -25,7 +25,7 @@ export default function EditActor() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const queryClient = useQueryClient();
+    // const queryClient = useQueryClient();
 
     const { data: actor, isLoading, error } = useQuery({
         queryKey: ['actor', databaseMode], // use databasemode as dependance of queryKey, if mode change query is refetch
