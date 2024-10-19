@@ -46,7 +46,7 @@ export default function Actors() {
         <p>{databaseMode}</p>
 
 
-        <div className='grid'>
+        <div className='grid custom-grid'>
           {actors?.map((actor) => (
             <article key={actor._id ? actor._id : actor.actor_id}>
               <header>

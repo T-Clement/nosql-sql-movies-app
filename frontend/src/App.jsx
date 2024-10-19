@@ -19,8 +19,6 @@ import '../src/custom-styles.css';
 
 export default function App() {
 
-  const {setToggleDisabled} = useRoute();
-
 
 
   const router = createBrowserRouter([

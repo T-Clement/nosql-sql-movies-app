@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 export default function AddMovieButton() {
   return (
     <div>
-        <button><Link className='contrast' to="/movies/new">Add a Movie</Link></button>
+        <button className=''><Link className='contrast' to="/movies/new">Add a Movie</Link></button>
     </div>
   )
 }
