@@ -117,6 +117,28 @@ class ActorsSQL {
     }
 
 
+    static async updateActor(updatedActor) {
+        const query = 'UPDATE actors SET firstname = $firstname, lastname = $lastname, biographie = $biographie WHERE actor_id = $actorId;';
+        const values = {
+            $actorId: updatedActor.actor_id, 
+            $firstname: updatedActor.firstname, 
+            $lastname: updatedActor.lastname,
+            $biographie: updatedActor.biographie
+        };
+
+        return new Promise((resolve, reject) => {
+            db.run(query, values, function(err) { // not arrow function to get access to this and this.changes
+                if (err) {
+                    console.error(`Error updating actor with actorId ${updatedActor.id} : ` + err.message);
+                    return reject(err); // reject promise if error
+                } else {
+                    resolve({changes: this.changes});
+                }
+            });
+        })
+    }
+
+
 
 }
 

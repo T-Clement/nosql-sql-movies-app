@@ -31,13 +31,29 @@ exports.update = async (req, res, next) => {
     console.log(req.body);
 
 
-    const {lastname, firsname, biographie: biograhpie} = req.body;
+    const {id: actor_id, lastname, firstname, biographie: biograhpie} = req.body;
+
+
+    // TODO
+    let updatedActor = { actor_id, lastname, firstname, biograhpie};
+    console.log(updatedActor);
+    try {
+
+        const resultUpdateActor = await ActorsSQL.updateActor(updatedActor); 
+
+        if(resultUpdateActor.changes === 0) {
+            return res.status(404).json({message: "No actor for this ID"});
+        }
+
+        return res.status(200).json({message: "Actor updated succesfully", actor: {}, changes: resultUpdateActor.changes});
+
+
+    } catch(error) {
+        return res.status(500).json({message: "Error during updating actor process", error: error.message});
+    }
 
 
 
-
-
-    return res.status(200).json({message: 'data received'});
 }
 
 
