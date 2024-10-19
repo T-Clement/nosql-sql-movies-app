@@ -17,10 +17,14 @@ something in mongodb mode after a refreshed / reload page
 TODO :
 - BACKEND :
     - add validator
+    - add request related to directors
+    - add request related to genres
+    - add request related to studios
     - ...
 
 - FRONT :
     - add movies played by actor in actor view
+    - display in movie data related to directors, genres and studios (mainly SQL work)
 
 DONE : 
 - BACKEND :

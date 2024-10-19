@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useRoute } from '../../hooks/RouteContext';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Mutation, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDatabaseMode } from '../../hooks/databaseModeContext';
 import axios from 'axios';
@@ -102,7 +102,7 @@ export default function EditActor() {
         e.preventDefault();
         const deletedActorId = id;
 
-        if(window.confirm('Are you sure you want to delete this actor? This action cannot be undone.')) {
+        if (window.confirm('Are you sure you want to delete this actor? This action cannot be undone.')) {
             deleteMutation.mutate(deletedActorId);
         }
         return;
@@ -147,7 +147,9 @@ export default function EditActor() {
                     <label>
                         Movies :
                         <ul>
-                            <li>TODO -- played movies</li>
+                            {actor.movies.map(movie =>
+                                (<li key={movie.movie_id || movie._id}><Link to={`/movies/${movie.movie_id || movie._id}`}>{movie.title} - {movie.year}</Link></li>)
+                            )}
                         </ul>
                     </label>
                 </fieldset>
@@ -161,7 +163,7 @@ export default function EditActor() {
                 )}
 
 
-                <button style={{backgroundColor: "#AF291D"}} type="button" onClick={handleDelete} disabled={deleteMutation.isLoading}>
+                <button style={{ backgroundColor: "#AF291D" }} type="button" onClick={handleDelete} disabled={deleteMutation.isLoading}>
                     {deleteMutation.isLoading ? <span aria-busy="true">Deleting...</span> : 'Delete Actor'}
                 </button>
 

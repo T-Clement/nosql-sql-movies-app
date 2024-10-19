@@ -139,6 +139,26 @@ class ActorsSQL {
     }
 
 
+    static async getMoviesPlayedByActor(actorId) {
+        const query = 'SELECT m.movie_id, m.title, m.year FROM movies m INNER JOIN actors_movies USING(movie_id) WHERE actor_id = $actor_id';
+        const values = {$actor_id: actorId};
+
+        return new Promise((resolve, reject) => {
+            db.all(query, values, (err, rows) => {
+                if(err) {
+                    console.error("Error finding movies of an actor : " + err.message);
+                    reject(err);
+                } else {
+                    // console.log(rows);
+                    resolve(rows);
+                }
+            });
+        });
+    }
+
+
+    
+
 
 }
 

@@ -17,10 +17,22 @@ exports.index = async (req, res, next) => {
 
 
 exports.show = async (req, res, next) => {
-    let actor = await ActorsSQL.getActor(req.params.id);
+    const actorId = req.params.id;
+
+    let actor = await ActorsSQL.getActor(actorId);
     
     if(!actor) {
         return res.status(404).json({message: "No actor for this ID"});
+    }
+
+    // add movies to actor
+
+    const movies = await ActorsSQL.getMoviesPlayedByActor(actorId);
+
+    if(!movies) {
+        actor.movies = [];
+    } else {
+        actor.movies = movies; 
     }
 
     return res.status(200).json(actor);

@@ -30,10 +30,17 @@ exports.show = async (req, res, next) => {
         return res.status(404).json({message: 'No actor for this ID'});
     }
 
-    let moviesPlayedByActors = await MongoBot.MoviesMongo.getMoviesPlayedByActor(o_id);
+    let moviesPlayedByActor = await MongoBot.MoviesMongo.getMoviesPlayedByActor(o_id);
+    console.log(moviesPlayedByActor);
 
     // add property to actor object
-    actor.movies = moviesPlayedByActors;
+    if(moviesPlayedByActor.length === 0) {
+        
+        actor.movies = [];
+    } else {
+
+        actor.movies = moviesPlayedByActor;
+    }
 
     return res.status(200).json(actor);
 }
