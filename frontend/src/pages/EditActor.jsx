@@ -31,21 +31,21 @@ export default function EditActor() {
         queryKey: ['actor', databaseMode], // use databasemode as dependance of queryKey, if mode change query is refetch
         queryFn: async () => {
             const response = await fetch(`http://localhost:3000/api/${databaseMode}/actors/${id}`);
-          
-            if(!response.ok) {
+
+            if (!response.ok) {
                 throw new Error(`Error ${response.status}: ${response.statusText}`);
             }
 
             return response.json();
         },
         onError: (error) => {
-            if(error.message.includes('404')) {
+            if (error.message.includes('404')) {
                 navigate('/404');
             }
         }
     });
 
-    console.log(actor);
+    // console.log(actor);
 
     useEffect(() => {
         if (actor) {
@@ -56,7 +56,7 @@ export default function EditActor() {
     }, [actor]);
 
 
-    const mutation = useMutation({
+    const updateMutation = useMutation({
         mutationFn: async (updatedActor) => {
             const response = await axios.put(`http://localhost:3000/api/${databaseMode}/actors/${id}/update`, updatedActor);
             return response.data;
@@ -66,6 +66,17 @@ export default function EditActor() {
             navigate(`/actors/${id}`);
         }
 
+    });
+
+
+    const deleteMutation = useMutation({
+        mutationFn: async (deletedActorId) => {
+            const response = await axios.delete(`http://localhost:3000/api/${databaseMode}/actors/${id}/delete`, deletedActorId);
+            return response.data;
+        },
+        onSuccess: () => {
+            navigate(`/actors`);
+        }
     })
 
 
@@ -81,8 +92,20 @@ export default function EditActor() {
 
         console.log('updated actor', updatedActor);
         // return;
-        mutation.mutate(updatedActor);
+        updateMutation.mutate(updatedActor);
 
+    }
+
+
+
+    const handleDelete = (e) => {
+        e.preventDefault();
+        const deletedActorId = id;
+
+        if(window.confirm('Are you sure you want to delete this actor? This action cannot be undone.')) {
+            deleteMutation.mutate(deletedActorId);
+        }
+        return;
     }
 
 
@@ -129,13 +152,20 @@ export default function EditActor() {
                     </label>
                 </fieldset>
 
-                <button className="secondary" type='submit' disabled={mutation.isLoading}>
-                    {mutation.isLoading ? <span aria-busy="true">Updating...</span> : 'Update'}
+                <button className="secondary" type='submit' disabled={updateMutation.isLoading}>
+                    {updateMutation.isLoading ? <span aria-busy="true">Updating...</span> : 'Update'}
                 </button>
 
-                {mutation.isError && (
-                    <div>An error occurred: {mutation.error.message}</div>
+                {updateMutation.isError && (
+                    <div>An error occurred: {updateMutation.error.message}</div>
                 )}
+
+
+                <button style={{backgroundColor: "#AF291D"}} type="button" onClick={handleDelete} disabled={deleteMutation.isLoading}>
+                    {deleteMutation.isLoading ? <span aria-busy="true">Deleting...</span> : 'Delete Actor'}
+                </button>
+
+
 
 
             </form>
