@@ -56,6 +56,10 @@ export default function App() {
           element: <Genres />
         },
         {
+          path: '/genres/:id',
+          element: <Genres />
+        },
+        {
           path: '404',
           element: <Page404 />
         },

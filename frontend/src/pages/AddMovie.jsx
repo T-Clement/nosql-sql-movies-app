@@ -4,6 +4,7 @@ import Select from 'react-select'
 import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
 import { useRoute } from '../../hooks/RouteContext';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 
@@ -227,7 +228,7 @@ export default function AddMovie() {
                 </form>
 
                 {isSubmitting && <p>Sending in progress...</p>}
-                {isSuccess && <p>Film successfully added !</p>}
+                {isSuccess && <div><p>Film successfully added !</p><p><Link to={`/movies/${mutation.data.movie._id || mutation.data.movie.movie_id}`}>Go to new movie</Link></p></div>}
                 {isError && <p>An error happened during film adding process.</p>}
 
 
