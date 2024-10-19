@@ -66,7 +66,9 @@ export default function Actor() {
         <footer>
           <p>Films :</p>
           <ul>
-            <li>TODO with <Link>link to movie</Link></li>
+            {actor.movies.map(movie => 
+                (<li key={movie.movie_id || movie._id}><Link to={`/movies/${movie.movie_id || movie._id}`}>{movie.title} - {movie.year}</Link></li>)
+            )}
           </ul>
         </footer>
       </article>

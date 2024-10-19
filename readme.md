@@ -17,11 +17,9 @@ something in mongodb mode after a refreshed / reload page
 TODO :
 - BACKEND :
     - add validator
-    - cascade on delete for SQL and Mongo(unset)
     - ...
 
 - FRONT :
-    - fix grid in desktop
     - add movies played by actor in actor view
 
 DONE : 
@@ -31,6 +29,7 @@ DONE :
     - use REDIS to cache genre of movies
     - add movie post store route
     - update an actor name in MongoDB and update his name in all movies related to him
+    - cascade on delete for SQL and Mongo(unset)
 
 - FRONTEND :    
     - add Router
@@ -40,3 +39,4 @@ DONE :
     - add view show actor
     - add view for update actor name
     - dark / light toggle theme
+    - fix grid in desktop

@@ -69,5 +69,17 @@ class MoviesMongo {
     }
 
 
+    async getMoviesPlayedByActor(actor_id) {
+      const movies = await this.collection.find({
+        "actors._id": actor_id
+      }, 
+      { 
+        projection: {_id: 1, title: 1, year: 1 }
+      }).toArray();
+      
+      return movies;
+    }
+
+
   }
   module.exports = MoviesMongo;
