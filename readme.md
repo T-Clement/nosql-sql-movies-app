@@ -23,7 +23,6 @@ TODO :
     - ...
 
 - FRONT :
-    - add movies played by actor in actor view
     - display in movie data related to directors, genres and studios (mainly SQL work)
 
 DONE : 
@@ -44,3 +43,4 @@ DONE :
     - add view for update actor name
     - dark / light toggle theme
     - fix grid in desktop
+    - add movies played by actor in actor view

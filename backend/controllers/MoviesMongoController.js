@@ -12,7 +12,7 @@ exports.show = async (req, res, next) => {
 
 exports.index = async (req, res, next) => {
     const movies = await MongoBot.MoviesMongo.getMovies();
-    console.log(movies);
+    // console.log(movies);
     return res.status(200).json(movies);
 }
 
