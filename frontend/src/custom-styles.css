@@ -1,0 +1,20 @@
+
+.custom-grid {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+
+@media screen and (min-width: 768px) {
+    
+    .custom-grid {
+        grid-template-columns: repeat(2, 1fr) !important; 
+    }
+}
+
+
+@media screen and (min-width: 1024px) {
+    .custom-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}

@@ -55,7 +55,7 @@ function Home() {
 
                 <AddMovieButton />
 
-                <div className='grid'>
+                <div className='grid custom-grid'>
                     {movies?.map((movie) => (
                         <article key={movie._id ? movie._id : movie.movie_id}>
                             <header>

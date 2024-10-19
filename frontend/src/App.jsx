@@ -10,11 +10,12 @@ import AddMovie from "./pages/AddMovie";
 
 import { useRoute } from "../hooks/RouteContext";
 
-import '@picocss/pico'
 import EditActor from "./pages/EditActor";
 import Genres from "./pages/Genres";
 import Page404 from "./pages/Page404";
 
+import '@picocss/pico';
+import '../src/custom-styles.css';
 
 export default function App() {
 
